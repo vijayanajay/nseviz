@@ -3,10 +3,10 @@
 ---
 **Stats:**
 - Total Tasks: 32
-- Completed: 12
-- % Complete: 37%
-- Completed Effort: 15h
-- Pending Effort: 17h
+- Completed: 13
+- % Complete: 40%
+- Completed Effort: 17h
+- Pending Effort: 15h
 
 | Task ID | Description | Status | Est. Time | Time Taken |
 |---------|-------------|--------|-----------|------------|
@@ -22,11 +22,20 @@
 | B3.4    | Implement support for date-based data fetching (latest and historical). Example: `/api/heatmap-data?date=2024-04-01` returns data for that date. | ✅ | 1.5h      | 1h         |
 | B4.1    | Write unit tests for /api/heatmap-data (mock data) using `pytest`. Example: test valid response, test invalid sector param. | ✅ | 1h        | 1h         |
 | B4.2    | Write unit tests for /api/heatmap-data (yfinance data) using `pytest` and `unittest.mock` to mock yfinance calls. | ✅ | 1.5h      | 1.5h         |
-| B4.3    | Implement automated API contract tests using `pytest` and `requests` to ensure endpoint returns correct schema for all query param combinations. |  | 2h        |            |
+| B4.3    | Implement automated API contract tests using `pytest` and `requests` to ensure endpoint returns correct schema for all query param combinations. | ✅ | 2h        | 2h         |
 | B4.4    | Add logging for requests and errors using Python's `logging` module. Log every request and error with timestamp and params. |  | 1h        |            |
 | B4.5    | Refactor code for clarity and maintainability: add docstrings, type hints, and inline comments. Example: `def get_heatmap_data(index: str, sector: str) -> dict:` |  | 1.5h      |            |
 
 *Update Time Taken column as tasks are completed.*
+
+---
+
+## [2025-04-25] Backend Heatmap API Contract & Automated Tests Complete
+- All backend contract and matrix tests for `/api/heatmap-data` pass via pytest and requests.
+- Responses always include `date` and `note` fields.
+- For invalid sector/category, endpoint returns 200 with empty data and a clear note.
+- All yfinance mocks and test expectations match backend aggregation logic (latest date record returned).
+- Backend is robust, minimal, and fully tested as per project principles.
 
 ---
 
