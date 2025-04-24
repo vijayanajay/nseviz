@@ -3,10 +3,10 @@
 ---
 **Stats:**
 - Total Tasks: 32
-- Completed: 9
-- % Complete: 28%
-- Completed Effort: 11.5h
-- Pending Effort: 20.5h
+- Completed: 10
+- % Complete: 31%
+- Completed Effort: 12.5h
+- Pending Effort: 19.5h
 
 | Task ID | Description | Status | Est. Time | Time Taken |
 |---------|-------------|--------|-----------|------------|
@@ -19,7 +19,7 @@
 | B3.1    | Use yfinance to fetch technical chart data for requested index/sector/stock. Example: `import yfinance as yf; yf.download('^NSEI', period='1d')`. | ✅ | 1.5h      | 1.5h        |
 | B3.2    | Implement logic to filter/group yfinance data by category, index, sector as per query params. Example: filter stocks in the FINANCE sector from NIFTY50. | ✅ | 1.5h      | 1.5h        |
 | B3.3    | Transform raw yfinance data to the frontend schema: include symbol, name, price, change %, volume, etc. Example output: `[ { "symbol": "HDFCBANK", "name": "HDFC Bank", "price": 1600.5, "change": 1.2 } ]`. | ✅ | 2h        | 1h         |
-| B3.4    | Implement support for date-based data fetching (latest and historical). Example: `/api/heatmap-data?date=2024-04-01` returns data for that date. |  | 1.5h      |            |
+| B3.4    | Implement support for date-based data fetching (latest and historical). Example: `/api/heatmap-data?date=2024-04-01` returns data for that date. | ✅ | 1.5h      | 1h         |
 
 *Update Time Taken column as tasks are completed.*
 
@@ -41,7 +41,7 @@
 - **B3.1** (1.5h): Use yfinance to fetch technical chart data for requested index/sector/stock. Example: `import yfinance as yf; yf.download('^NSEI', period='1d')`. ✅
 - **B3.2** (1.5h): Implement logic to filter/group yfinance data by category, index, sector as per query params. Example: filter stocks in the FINANCE sector from NIFTY50. ✅
 - **B3.3** (2h): Transform raw yfinance data to the frontend schema: include symbol, name, price, change %, volume, etc. Example output: `[ { "symbol": "HDFCBANK", "name": "HDFC Bank", "price": 1600.5, "change": 1.2 } ]`. ✅
-- **B3.4** (1.5h): Implement support for date-based data fetching (latest and historical). Example: `/api/heatmap-data?date=2024-04-01` returns data for that date.
+- **B3.4** (1.5h): Implement support for date-based data fetching (latest and historical). Example: `/api/heatmap-data?date=2024-04-01` returns data for that date. ✅
 
 ### 4. Automated Testing & Validation
 - **B4.1** (1h): Write unit tests for `/api/heatmap-data` (mock data) using `pytest`. Example: test valid response, test invalid sector param.

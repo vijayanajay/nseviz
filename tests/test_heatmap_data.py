@@ -102,3 +102,42 @@ def test_sector_filtering(client):
                     assert field in hdfc, f"Missing field: {field}"
                 assert hdfc['name'] == 'HDFC Bank'
                 assert hdfc['volume'] == 100000
+
+def test_date_param_valid(client):
+    # Mock yfinance to return data for the requested date
+    mock_df = pd.DataFrame({
+        'Open': [1000.0],
+        'High': [1050.0],
+        'Low': [995.0],
+        'Close': [1020.0],
+        'Volume': [100000],
+    }, index=pd.to_datetime(['2024-04-01']))
+    with patch('yfinance.download', return_value=mock_df):
+        resp = client.get('/api/heatmap-data?index=NIFTY50&sector=FINANCE&date=2024-04-01')
+        assert resp.status_code == 200
+        data = resp.get_json()
+        assert data['index'] == 'NIFTY50'
+        assert data['sector'] == 'FINANCE'
+        assert isinstance(data['data'], list)
+        assert len(data['data']) > 0
+        item = data['data'][0]
+        assert item['price'] == 1020.0
+
+def test_date_param_invalid_format(client):
+    resp = client.get('/api/heatmap-data?index=NIFTY50&sector=FINANCE&date=notadate')
+    assert resp.status_code == 400
+    data = resp.get_json()
+    assert data['error']['code'] == 'INVALID_PARAM'
+    assert 'date' in data['error']['message']
+
+def test_date_param_no_data(client):
+    # Mock yfinance to return an empty DataFrame for the date
+    mock_df = pd.DataFrame()
+    with patch('yfinance.download', return_value=mock_df):
+        resp = client.get('/api/heatmap-data?index=NIFTY50&sector=FINANCE&date=2024-04-02')
+        assert resp.status_code == 200
+        data = resp.get_json()
+        assert data['index'] == 'NIFTY50'
+        assert data['sector'] == 'FINANCE'
+        assert isinstance(data['data'], list)
+        assert len(data['data']) == 0

@@ -38,6 +38,7 @@ def heatmap_data():
     # Validate query params
     index = request.args.get('index')
     sector = request.args.get('sector')
+    date_str = request.args.get('date')
     # For test: force a server error if force_error=1
     if request.args.get('force_error') == '1':
         raise Exception('Forced server error for testing')
@@ -51,9 +52,23 @@ def heatmap_data():
         return jsonify(error={"code": "INVALID_PARAM", "message": "Missing required parameter: sector"}), 400
     if sector not in valid_sectors:
         return jsonify(error={"code": "INVALID_PARAM", "message": f"Invalid sector: {sector}"}), 400
+    # Date param validation and yfinance download args
+    yf_kwargs = {}
+    if date_str:
+        from datetime import datetime, timedelta
+        try:
+            date_obj = datetime.strptime(date_str, "%Y-%m-%d")
+            # yfinance end date is exclusive, so add 1 day
+            next_day = date_obj + timedelta(days=1)
+            yf_kwargs['start'] = date_obj.strftime("%Y-%m-%d")
+            yf_kwargs['end'] = next_day.strftime("%Y-%m-%d")
+        except ValueError:
+            return jsonify(error={"code": "INVALID_PARAM", "message": "Invalid date format for 'date' param, expected YYYY-MM-DD"}), 400
+    else:
+        yf_kwargs['period'] = '1d'
     try:
         tickers = valid_indices[index]
-        df = yf.download(tickers, period='1d', group_by='ticker')
+        df = yf.download(tickers, group_by='ticker', **yf_kwargs)
         sector_map = get_sector_mapping()
         name_map = get_name_mapping()
         result = []
@@ -62,6 +77,8 @@ def heatmap_data():
                 continue
             # Handle both single and multi-index DataFrame
             stock_df = df[symbol] if symbol in df else df
+            if stock_df.empty:
+                continue
             latest = stock_df.iloc[-1]
             price = float(latest['Close'])
             change = float(latest['Close'] - latest['Open']) / float(latest['Open']) * 100 if latest['Open'] else 0
