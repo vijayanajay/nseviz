@@ -3,10 +3,10 @@
 ---
 **Stats:**
 - Total Tasks: 32
-- Completed: 11
-- % Complete: 34%
-- Completed Effort: 13.5h
-- Pending Effort: 18.5h
+- Completed: 12
+- % Complete: 37%
+- Completed Effort: 15h
+- Pending Effort: 17h
 
 | Task ID | Description | Status | Est. Time | Time Taken |
 |---------|-------------|--------|-----------|------------|
@@ -21,7 +21,7 @@
 | B3.3    | Transform raw yfinance data to the frontend schema: include symbol, name, price, change %, volume, etc. Example output: `[ { "symbol": "HDFCBANK", "name": "HDFC Bank", "price": 1600.5, "change": 1.2 } ]`. | ✅ | 2h        | 1h         |
 | B3.4    | Implement support for date-based data fetching (latest and historical). Example: `/api/heatmap-data?date=2024-04-01` returns data for that date. | ✅ | 1.5h      | 1h         |
 | B4.1    | Write unit tests for /api/heatmap-data (mock data) using `pytest`. Example: test valid response, test invalid sector param. | ✅ | 1h        | 1h         |
-| B4.2    | Write unit tests for /api/heatmap-data (yfinance data) using `pytest` and `unittest.mock` to mock yfinance calls. |  | 1.5h      |            |
+| B4.2    | Write unit tests for /api/heatmap-data (yfinance data) using `pytest` and `unittest.mock` to mock yfinance calls. | ✅ | 1.5h      | 1.5h         |
 | B4.3    | Implement automated API contract tests using `pytest` and `requests` to ensure endpoint returns correct schema for all query param combinations. |  | 2h        |            |
 | B4.4    | Add logging for requests and errors using Python's `logging` module. Log every request and error with timestamp and params. |  | 1h        |            |
 | B4.5    | Refactor code for clarity and maintainability: add docstrings, type hints, and inline comments. Example: `def get_heatmap_data(index: str, sector: str) -> dict:` |  | 1.5h      |            |
@@ -33,23 +33,23 @@
 ## Backend (Flask API, yfinance only, single endpoint)
 
 ### 1. Project Setup & API Contract
-- **B1.1** (1h): Set up Python virtual environment and install Flask & yfinance. Example: `python -m venv venv && pip install Flask yfinance`. ✅
-- **B1.2** (1.5h): Initialize Flask project structure: create folders for `app/`, `app/routes.py`, `app/__init__.py`, `requirements.txt`, and `config.py`. ✅
-- **B1.3** (2h): Draft and document a single API contract: `/api/heatmap-data` with query params (`category`, `index`, `sector`, `date`). Document expected request format and sample response in `docs/api.md`. Example request: `/api/heatmap-data?index=NIFTY50&sector=FINANCE&date=2024-04-01`. ✅
-- **B1.4** (1h): Set up CORS in Flask using `flask-cors` to allow frontend JS access. Example: `from flask_cors import CORS; CORS(app)`. ✅
+- **B1.1** (1h): Set up Python virtual environment and install Flask & yfinance. Example: `python -m venv venv && pip install Flask yfinance`. 
+- **B1.2** (1.5h): Initialize Flask project structure: create folders for `app/`, `app/routes.py`, `app/__init__.py`, `requirements.txt`, and `config.py`. 
+- **B1.3** (2h): Draft and document a single API contract: `/api/heatmap-data` with query params (`category`, `index`, `sector`, `date`). Document expected request format and sample response in `docs/api.md`. Example request: `/api/heatmap-data?index=NIFTY50&sector=FINANCE&date=2024-04-01`. 
+- **B1.4** (1h): Set up CORS in Flask using `flask-cors` to allow frontend JS access. Example: `from flask_cors import CORS; CORS(app)`. 
 
 ### 2. Endpoint Stub & Mock Data
-- **B2.1** (1h): Implement `/api/heatmap-data` endpoint in `routes.py` that returns static/mock JSON data matching the documented schema. Example response: `{ "index": "NIFTY50", "sector": "FINANCE", "data": [{ "symbol": "HDFCBANK", "change": 1.2, "price": 1600.5 }] }`. ✅
-- **B2.2** (1h): Add error handling for the endpoint: return 400 for invalid params, 500 for server errors, with JSON error messages. Example: `{ "error": "Invalid sector" }`. ✅
+- **B2.1** (1h): Implement `/api/heatmap-data` endpoint in `routes.py` that returns static/mock JSON data matching the documented schema. Example response: `{ "index": "NIFTY50", "sector": "FINANCE", "data": [{ "symbol": "HDFCBANK", "change": 1.2, "price": 1600.5 }] }`. 
+- **B2.2** (1h): Add error handling for the endpoint: return 400 for invalid params, 500 for server errors, with JSON error messages. Example: `{ "error": "Invalid sector" }`. 
 
 ### 3. yfinance Integration
-- **B3.1** (1.5h): Use yfinance to fetch technical chart data for requested index/sector/stock. Example: `import yfinance as yf; yf.download('^NSEI', period='1d')`. ✅
-- **B3.2** (1.5h): Implement logic to filter/group yfinance data by category, index, sector as per query params. Example: filter stocks in the FINANCE sector from NIFTY50. ✅
-- **B3.3** (2h): Transform raw yfinance data to the frontend schema: include symbol, name, price, change %, volume, etc. Example output: `[ { "symbol": "HDFCBANK", "name": "HDFC Bank", "price": 1600.5, "change": 1.2 } ]`. ✅
-- **B3.4** (1.5h): Implement support for date-based data fetching (latest and historical). Example: `/api/heatmap-data?date=2024-04-01` returns data for that date. ✅
+- **B3.1** (1.5h): Use yfinance to fetch technical chart data for requested index/sector/stock. Example: `import yfinance as yf; yf.download('^NSEI', period='1d')`. 
+- **B3.2** (1.5h): Implement logic to filter/group yfinance data by category, index, sector as per query params. Example: filter stocks in the FINANCE sector from NIFTY50. 
+- **B3.3** (2h): Transform raw yfinance data to the frontend schema: include symbol, name, price, change %, volume, etc. Example output: `[ { "symbol": "HDFCBANK", "name": "HDFC Bank", "price": 1600.5, "change": 1.2 } ]`. 
+- **B3.4** (1.5h): Implement support for date-based data fetching (latest and historical). Example: `/api/heatmap-data?date=2024-04-01` returns data for that date. 
 
 ### 4. Automated Testing & Validation
-- **B4.1** (1h): Write unit tests for `/api/heatmap-data` (mock data) using `pytest`. Example: test valid response, test invalid sector param. ✅
+- **B4.1** (1h): Write unit tests for `/api/heatmap-data` (mock data) using `pytest`. Example: test valid response, test invalid sector param. 
 - **B4.2** (1.5h): Write unit tests for `/api/heatmap-data` (yfinance data) using `pytest` and `unittest.mock` to mock yfinance calls.
 - **B4.3** (2h): Implement automated API contract tests using `pytest` and `requests` to ensure endpoint returns correct schema for all query param combinations.
 - **B4.4** (1h): Add logging for requests and errors using Python's `logging` module. Log every request and error with timestamp and params.
