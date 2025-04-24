@@ -3,10 +3,10 @@
 ---
 **Stats:**
 - Total Tasks: 32
-- Completed: 21
-- % Complete: 65%
-- Completed Effort: 23.2h
-- Pending Effort: 8.8h
+- Completed: 22
+- % Complete: 68%
+- Completed Effort: 24.2h
+- Pending Effort: 7.8h
 
 | Task ID | Description | Status | Est. Time | Time Taken |
 |---------|-------------|--------|-----------|------------|
@@ -72,7 +72,7 @@
 - **F6.3** (1h): Add CSS files: `base.css`, `components.css`, `layouts.css`, `dark-mode.css` (now in frontend/) | ✅ | 1h        | 0.1h         |
 
 ### 7. Core Components (UI Skeleton)
-- **F7.1** (1.5h): Implement Navbar (logo, navigation, date display) in HTML and style in `components.css`. Example: `<nav><img src="logo.svg"> <span>Indian Stock Market Heatmap</span> <span id="date"></span></nav>`
+- **F7.1** (1.5h): Implement Navbar (logo, navigation, date display) in HTML and style in `components.css`. Example: `<nav><img src="logo.svg"> <span>Indian Stock Market Heatmap</span> <span id="date"></span></nav>` | ✅ | 1.5h | 1h |
 - **F7.2** (1.5h): Implement Index Selector as segmented control in HTML and JS. Example: `<button data-index="NIFTY50">Nifty 50</button>`; add event listeners in JS.
 - **F7.3** (2h): Implement Date Picker with calendar overlay and focus states using vanilla JS. Example: `<input type="date" id="datepicker">` and style overlay in CSS.
 - **F7.4** (1.5h): Implement responsive Grid Layout for heatmap/treemap in `layouts.css`. Example: CSS grid with 12 columns for desktop, 1 column for mobile.
@@ -100,6 +100,14 @@
 ### 11. Final Review & Handover
 - **F11.1** (1h): Ensure all frontend automated tests pass (Jest, Cypress, Stylelint). Example: run `npm test` and `npx cypress run`.
 - **F11.2** (1h): Prepare frontend handover checklist: all tests passing, code linted, documentation complete.
+
+---
+## [2025-04-25] Frontend Navbar Implementation & Automated Testing
+- Implemented Navbar (logo, title, date) in HTML and styled with minimal CSS.
+- Created simple `logo.svg` placeholder.
+- Added Jest unit test for Navbar structure.
+- Added Cypress UI test for Navbar rendering.
+- All tests passing; frontend served at http://localhost:8080 for further development.
 
 ---
 

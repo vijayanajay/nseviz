@@ -1,1 +1,26 @@
 /* Components CSS (navbar, card, heatmap cell, etc.) - to be implemented */
+
+/* Navbar styles */
+#navbar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: #fff;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 12px 24px;
+  min-height: 56px;
+}
+#logo {
+  border-radius: 6px;
+}
+.navbar-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #222;
+  letter-spacing: 0.01em;
+}
+#date {
+  margin-left: auto;
+  font-size: 1rem;
+  color: #666;
+}

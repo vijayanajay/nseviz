@@ -1,5 +1,7 @@
 {
   "devDependencies": {
-    "jest-environment-jsdom": "^29.7.0"
+    "cypress": "^14.3.2",
+    "jest-environment-jsdom": "^29.7.0",
+    "serve": "^14.2.4"
   }
 }
