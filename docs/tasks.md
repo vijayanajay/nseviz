@@ -61,6 +61,15 @@
 
 ---
 
+## [2025-04-24] Backend Heatmap API Contract & Tests Complete
+- All backend contract and matrix tests for `/api/heatmap-data` now pass.
+- Responses always include `date` and `note` fields.
+- For invalid sector/category, endpoint returns 200 with empty data and a clear note.
+- All yfinance mocks and test expectations match backend aggregation logic (latest date record returned).
+- Backend is robust, minimal, and fully tested as per project principles.
+
+---
+
 ## Frontend (Minimal JS + D3.js, starts after backend is ready, per frontend-design.md)
 
 ### 6. Project Setup
