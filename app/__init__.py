@@ -1,11 +1,22 @@
+"""
+Module-level docstring:
+Initializes the Flask application, configures logging, CORS, and registers blueprints.
+"""
 import os
 import logging
 
 from flask import Flask
 from flask_cors import CORS
+from typing import Any
 
 
-def create_app():
+def create_app() -> Flask:
+    """
+    Factory function to create and configure the Flask application.
+    Sets up CORS, logging, and registers API blueprints.
+    Returns:
+        Flask: The configured Flask application instance.
+    """
     app = Flask(__name__)
     CORS(app)
     # Structured logging config
@@ -29,7 +40,15 @@ def create_app():
 
     # App-level error handler for 500 errors: returns JSON for /api/*
     @app.errorhandler(500)
-    def handle_internal_error(e):
+    def handle_internal_error(e: Exception) -> Any:
+        """
+        Handle uncaught internal server errors at the app level.
+        Returns JSON for API routes and plain text for others.
+        Args:
+            e (Exception): The exception that was raised.
+        Returns:
+            Response: JSON or plain text response with error details and HTTP 500 status.
+        """
         from flask import request, jsonify, current_app
         current_app.logger.error(f"Error: Internal error: {e}")
         if request.path.startswith('/api/'):

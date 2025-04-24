@@ -4,20 +4,39 @@ import yfinance as yf
 from datetime import datetime
 import logging
 import os
+from typing import Dict, Any, List, Optional
+
+"""
+Module-level docstring:
+This module defines the API routes for the application.
+It includes error handlers, helper functions, and the main endpoint for fetching heatmap data.
+"""
 
 api_bp = Blueprint('api', __name__)
 CORS(api_bp)  # Explicitly enable CORS on the blueprint
 
 # --- Error Handlers ---
 @api_bp.errorhandler(500)
-def handle_internal_error(e):
+def handle_internal_error(e: Exception) -> Any:
+    """
+    Handle internal server errors and return a structured JSON response.
+    Args:
+        e (Exception): The exception that was raised.
+    Returns:
+        Response: Flask JSON response with error details and HTTP 500 status.
+    """
     logger = logging.getLogger()
     logger.error(f"Internal error: {e}")
     return jsonify(error={"code": "INTERNAL_ERROR", "message": "Server error"}), 500
 
 # --- Sector mapping helper ---
-def get_sector_mapping():
-    # In production, this would be dynamic or from a DB/file. For now, static for TDD/testing.
+def get_sector_mapping() -> Dict[str, str]:
+    """
+    Returns a static mapping of stock symbols to sectors.
+    In production, this would be dynamic or loaded from a database or file.
+    Returns:
+        dict: Mapping of symbol to sector.
+    """
     return {
         "HDFCBANK": "FINANCE",
         "INFY": "IT",
@@ -25,8 +44,13 @@ def get_sector_mapping():
     }
 
 # --- Name mapping helper ---
-def get_name_mapping():
-    # Static mapping for TDD/testing. In production, fetch from a DB or yfinance.Ticker().info
+def get_name_mapping() -> Dict[str, str]:
+    """
+    Returns a static mapping of stock symbols to company names.
+    In production, fetch from a DB or yfinance.Ticker().info.
+    Returns:
+        dict: Mapping of symbol to name.
+    """
     return {
         "HDFCBANK": "HDFC Bank",
         "INFY": "Infosys Ltd",
@@ -35,7 +59,17 @@ def get_name_mapping():
 
 # --- Endpoint ---
 @api_bp.route('/api/heatmap-data', methods=['GET', 'OPTIONS'])
-def heatmap_data():
+def heatmap_data() -> Any:
+    """
+    API endpoint to fetch heatmap data for a given index, sector, category, and date.
+    Query Parameters:
+        index (str): Required. Index name (e.g., NIFTY50).
+        sector (str): Optional. Sector name (e.g., FINANCE).
+        category (str): Optional. Category for filtering.
+        date (str): Optional. Date in YYYY-MM-DD format. Defaults to today.
+    Returns:
+        Response: JSON response with heatmap data or error message.
+    """
     logger = logging.getLogger()
     # For CORS preflight OPTIONS requests, return 200
     if request.method == 'OPTIONS':
@@ -80,13 +114,13 @@ def heatmap_data():
                 logger.error(f"Repeated query parameter: {param}")
                 return jsonify(error={"code": "INVALID_PARAM", "message": f"Repeated query parameter: {param}"}), 400
         # Validate required params
-        index = request.args.get("index")
+        index: Optional[str] = request.args.get("index")
         if not index:
             logger.error("Missing required parameter: index")
             return jsonify(error={"code": "INVALID_PARAM", "message": "Missing required parameter: index"}), 400
-        sector = request.args.get("sector")
-        category = request.args.get("category")
-        date = request.args.get("date")
+        sector: Optional[str] = request.args.get("sector")
+        category: Optional[str] = request.args.get("category")
+        date: Optional[str] = request.args.get("date")
         # Default date to today if not provided
         if not date:
             date = datetime.now().strftime("%Y-%m-%d")
@@ -98,20 +132,20 @@ def heatmap_data():
                 logger.error(f"Invalid date format: {date}")
                 return jsonify(error={"code": "INVALID_PARAM", "message": f"Invalid date format: {date}"}), 400
         # Validate sector/category only if provided (do not reject unknown sector/category, just return empty)
-        valid_indices = {"NIFTY50": ["HDFCBANK", "INFY"], "NIFTYBANK": ["HDFCBANK"]}  # Example mapping
-        valid_sectors = {"FINANCE", "IT", "AUTO"}  # Example, extend as needed
+        valid_indices: Dict[str, List[str]] = {"NIFTY50": ["HDFCBANK", "INFY"], "NIFTYBANK": ["HDFCBANK"]}  # Example mapping
+        valid_sectors: set = {"FINANCE", "IT", "AUTO"}  # Example, extend as needed
         if index not in valid_indices:
             logger.error(f"Invalid index: {index}")
             return jsonify(error={"code": "INVALID_PARAM", "message": f"Invalid index: {index}"}), 400
         # Fetch data (mocked or real)
-        tickers = valid_indices[index]
-        yf_kwargs = {}
+        tickers: List[str] = valid_indices[index]
+        yf_kwargs: Dict[str, Any] = {}
         yf_kwargs['start'] = date
         yf_kwargs['end'] = date
         df = yf.download(tickers, group_by='ticker', **yf_kwargs)
-        sector_map = get_sector_mapping()
-        name_map = get_name_mapping()
-        result = []
+        sector_map: Dict[str, str] = get_sector_mapping()
+        name_map: Dict[str, str] = get_name_mapping()
+        result: List[Dict[str, Any]] = []
         for symbol in tickers:
             if sector and sector_map.get(symbol) != sector:
                 continue
@@ -132,7 +166,7 @@ def heatmap_data():
                 "volume": volume
             })
         # Always include date in response
-        response = {
+        response: Dict[str, Any] = {
             "index": index,
             "sector": sector,
             "date": date,

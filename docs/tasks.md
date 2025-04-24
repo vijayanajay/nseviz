@@ -3,10 +3,10 @@
 ---
 **Stats:**
 - Total Tasks: 32
-- Completed: 14
-- % Complete: 44%
-- Completed Effort: 18h
-- Pending Effort: 14h
+- Completed: 15
+- % Complete: 47%
+- Completed Effort: 19h
+- Pending Effort: 13h
 
 | Task ID | Description | Status | Est. Time | Time Taken |
 |---------|-------------|--------|-----------|------------|
@@ -24,7 +24,7 @@
 | B4.2    | Write unit tests for /api/heatmap-data (yfinance data) using `pytest` and `unittest.mock` to mock yfinance calls. | ✅ | 1.5h      | 1.5h         |
 | B4.3    | Implement automated API contract tests using `pytest` and `requests` to ensure endpoint returns correct schema for all query param combinations. | ✅ | 2h        | 2h         |
 | B4.4    | Add logging for requests and errors using Python's `logging` module. Log every request and error with timestamp and params. | ✅ | 1h        | 1h         |
-| B4.5    | Refactor code for clarity and maintainability: add docstrings, type hints, and inline comments. Example: `def get_heatmap_data(index: str, sector: str) -> dict:` |  | 1.5h      |            |
+| B4.5    | Refactor code for clarity and maintainability: add docstrings, type hints, and inline comments. Example: `def get_heatmap_data(index: str, sector: str) -> dict:` | ✅ | 1.5h      | 1h         |
 
 *Update Time Taken column as tasks are completed.*
 
@@ -77,6 +77,12 @@
 - Automated contract tests for /api/heatmap-data now cover all query param edge cases (empty, repeated, unknown, long, whitespace, invalid-type).
 - Backend now rejects repeated critical params with structured 400 JSON error.
 - All tests pass (58/58). Backend contract is robust and ready for frontend handover.
+
+## [2025-04-25] Backend Code Refactor for Clarity & Maintainability
+- All backend code (`app/routes.py`, `app/__init__.py`) now includes comprehensive docstrings, type hints, and clarifying inline comments.
+- All public functions, Flask handlers, and helpers are fully documented and typed.
+- Code is now easier to read, maintain, and extend, in line with project and TDD principles.
+- No implementation logic was changed; only documentation, typing, and comments were added.
 
 ---
 
