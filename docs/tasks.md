@@ -3,16 +3,18 @@
 ---
 **Stats:**
 - Total Tasks: 32
-- Completed: 3
-- % Complete: 9%
-- Completed Effort: 4.5h
-- Pending Effort: 27.5h
+- Completed: 5
+- % Complete: 16%
+- Completed Effort: 6.5h
+- Pending Effort: 25.5h
 
 | Task ID | Description | Status | Est. Time | Time Taken |
 |---------|-------------|--------|-----------|------------|
 | B1.1    | Set up Python virtual environment and install Flask & yfinance | ✅ | 1h        | 1h         |
 | B1.2    | Initialize Flask project structure | ✅ | 1.5h      | 1.5h       |
 | B1.3    | Draft and document API contract in docs/api.md | ✅ | 2h        | 2h         |
+| B1.4    | Set up CORS in Flask using flask-cors to allow frontend JS access | ✅ | 1h        | 1h         |
+| B2.1    | Implement /api/heatmap-data endpoint in routes.py that returns static/mock JSON data matching the documented schema | ✅ | 1h        | 1h         |
 
 *Update Time Taken column as tasks are completed.*
 
@@ -24,10 +26,10 @@
 - **B1.1** (1h): Set up Python virtual environment and install Flask & yfinance. Example: `python -m venv venv && pip install Flask yfinance`. ✅
 - **B1.2** (1.5h): Initialize Flask project structure: create folders for `app/`, `app/routes.py`, `app/__init__.py`, `requirements.txt`, and `config.py`. ✅
 - **B1.3** (2h): Draft and document a single API contract: `/api/heatmap-data` with query params (`category`, `index`, `sector`, `date`). Document expected request format and sample response in `docs/api.md`. Example request: `/api/heatmap-data?index=NIFTY50&sector=FINANCE&date=2024-04-01`. ✅
-- **B1.4** (1h): Set up CORS in Flask using `flask-cors` to allow frontend JS access. Example: `from flask_cors import CORS; CORS(app)`.
+- **B1.4** (1h): Set up CORS in Flask using `flask-cors` to allow frontend JS access. Example: `from flask_cors import CORS; CORS(app)`. ✅
 
 ### 2. Endpoint Stub & Mock Data
-- **B2.1** (1h): Implement `/api/heatmap-data` endpoint in `routes.py` that returns static/mock JSON data matching the documented schema. Example response: `{ "index": "NIFTY50", "sector": "FINANCE", "data": [{ "symbol": "HDFCBANK", "change": 1.2, "price": 1600.5 }] }`.
+- **B2.1** (1h): Implement `/api/heatmap-data` endpoint in `routes.py` that returns static/mock JSON data matching the documented schema. Example response: `{ "index": "NIFTY50", "sector": "FINANCE", "data": [{ "symbol": "HDFCBANK", "change": 1.2, "price": 1600.5 }] }`. ✅
 - **B2.2** (1h): Add error handling for the endpoint: return 400 for invalid params, 500 for server errors, with JSON error messages. Example: `{ "error": "Invalid sector" }`.
 
 ### 3. yfinance Integration
