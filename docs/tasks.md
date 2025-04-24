@@ -3,10 +3,10 @@
 ---
 **Stats:**
 - Total Tasks: 32
-- Completed: 18
-- % Complete: 56%
-- Completed Effort: 20.7h
-- Pending Effort: 11.3h
+- Completed: 21
+- % Complete: 65%
+- Completed Effort: 23.2h
+- Pending Effort: 8.8h
 
 | Task ID | Description | Status | Est. Time | Time Taken |
 |---------|-------------|--------|-----------|------------|
@@ -25,12 +25,8 @@
 | B4.3    | Implement automated API contract tests using `pytest` and `requests` to ensure endpoint returns correct schema for all query param combinations. | ✅ | 2h        | 2h         |
 | B4.4    | Add logging for requests and errors using Python's `logging` module. Log every request and error with timestamp and params. | ✅ | 1h        | 1h         |
 | B4.5    | Refactor code for clarity and maintainability: add docstrings, type hints, and inline comments. Example: `def get_heatmap_data(index: str, sector: str) -> dict:` | ✅ | 1.5h      | 1h         |
-
-*Update Time Taken column as tasks are completed.*
-
----
-
-## Backend (Flask API, yfinance only, single endpoint)
+| B5.1    | Document endpoint, query params, and response schema in `docs/api.md` with request/response examples. | ✅ | 1h        | 1h         |
+| B5.2    | Prepare backend handover checklist: all tests passing (pytest), code linted (flake8), and documentation complete. | ✅ | 1h        | 1h         |
 
 ### 1. Project Setup & API Contract
 - **B1.1** (1h): Set up Python virtual environment and install Flask & yfinance. Example: `python -m venv venv && pip install Flask yfinance`. 
@@ -56,8 +52,8 @@
 - **B4.5** (1.5h): Refactor code for clarity and maintainability: add docstrings, type hints, and inline comments. Example: `def get_heatmap_data(index: str, sector: str) -> dict:`
 
 ### 5. Documentation & Handover
-- **B5.1** (1h): Document endpoint, query params, and response schema in `docs/api.md` with request/response examples.
-- **B5.2** (1h): Prepare backend handover checklist: all tests passing (pytest), code linted (flake8), and documentation complete.
+- **B5.1** (1h): Document endpoint, query params, and response schema in `docs/api.md` with request/response examples. | ✅ | 1h        | 1h         |
+- **B5.2** (1h): Prepare backend handover checklist: all tests passing (pytest), code linted (flake8), and documentation complete. | ✅ | 1h        | 1h         |
 
 ---
 ## [2025-04-25] Backend Code Refactor for Clarity & Maintainability
