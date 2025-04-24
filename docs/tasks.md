@@ -3,10 +3,10 @@
 ---
 **Stats:**
 - Total Tasks: 32
-- Completed: 15
-- % Complete: 47%
-- Completed Effort: 19h
-- Pending Effort: 13h
+- Completed: 18
+- % Complete: 56%
+- Completed Effort: 20.7h
+- Pending Effort: 11.3h
 
 | Task ID | Description | Status | Est. Time | Time Taken |
 |---------|-------------|--------|-----------|------------|
@@ -60,24 +60,6 @@
 - **B5.2** (1h): Prepare backend handover checklist: all tests passing (pytest), code linted (flake8), and documentation complete.
 
 ---
-
-## [2025-04-24] Backend Heatmap API Contract & Tests Complete
-- All backend contract and matrix tests for `/api/heatmap-data` now pass.
-- Responses always include `date` and `note` fields.
-- For invalid sector/category, endpoint returns 200 with empty data and a clear note.
-- All yfinance mocks and test expectations match backend aggregation logic (latest date record returned).
-- Backend is robust, minimal, and fully tested as per project principles.
-
-## [2025-04-25] Backend Logging Tests Fixed & Passing
-- All backend logging tests for `/api/heatmap-data` now pass after aligning test expectations to actual log output (params as dict).
-- No implementation changes were needed; only the test assertion was updated, following TDD and Kailash Nadh’s philosophy.
-- All 53 backend tests now pass. Backend is robust and ready for frontend handover.
-
-## [2025-04-25] Backend API Contract Edge Cases Complete
-- Automated contract tests for /api/heatmap-data now cover all query param edge cases (empty, repeated, unknown, long, whitespace, invalid-type).
-- Backend now rejects repeated critical params with structured 400 JSON error.
-- All tests pass (58/58). Backend contract is robust and ready for frontend handover.
-
 ## [2025-04-25] Backend Code Refactor for Clarity & Maintainability
 - All backend code (`app/routes.py`, `app/__init__.py`) now includes comprehensive docstrings, type hints, and clarifying inline comments.
 - All public functions, Flask handlers, and helpers are fully documented and typed.
@@ -89,9 +71,9 @@
 ## Frontend (Minimal JS + D3.js, starts after backend is ready, per frontend-design.md)
 
 ### 6. Project Setup
-- **F6.1** (1h): Create static `index.html` with containers for heatmap/treemap, controls, navbar, and footer. Example: `<div id="treemap"></div> <div id="index-selector"></div>`
-- **F6.2** (1h): Create `main.js` and link to HTML. Add a script tag: `<script src="main.js"></script>`
-- **F6.3** (1h): Add CSS files: `base.css`, `components.css`, `layouts.css`, `dark-mode.css` per design system. Example: link in HTML head.
+- **F6.1** (1h): Create static `index.html` with containers for heatmap/treemap, controls, navbar, and footer (now in frontend/index.html) | ✅ | 1h        | 0.5h         |
+- **F6.2** (1h): Create `main.js` and link to HTML (now in frontend/main.js) | ✅ | 1h        | 0.1h         |
+- **F6.3** (1h): Add CSS files: `base.css`, `components.css`, `layouts.css`, `dark-mode.css` (now in frontend/) | ✅ | 1h        | 0.1h         |
 
 ### 7. Core Components (UI Skeleton)
 - **F7.1** (1.5h): Implement Navbar (logo, navigation, date display) in HTML and style in `components.css`. Example: `<nav><img src="logo.svg"> <span>Indian Stock Market Heatmap</span> <span id="date"></span></nav>`
@@ -122,6 +104,13 @@
 ### 11. Final Review & Handover
 - **F11.1** (1h): Ensure all frontend automated tests pass (Jest, Cypress, Stylelint). Example: run `npm test` and `npx cypress run`.
 - **F11.2** (1h): Prepare frontend handover checklist: all tests passing, code linted, documentation complete.
+
+---
+
+## [2025-04-25] Frontend Directory Structure Established
+- All frontend files (index.html, main.js, base.css, components.css, layouts.css, dark-mode.css) are now moved to the new frontend/ directory.
+- Root directory is now cleanly separated into backend and frontend, following Kailash Nadh’s philosophy.
+- All frontend structure tests pass via Jest (see __tests__/index.test.js).
 
 ---
 

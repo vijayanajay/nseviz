@@ -164,3 +164,5 @@ Thumbs.db
 /*.ps1
 /testresults.txt
 /*.windsurfrules
+/node_modules/.bin
+/node_modules
