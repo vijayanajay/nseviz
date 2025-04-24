@@ -3,10 +3,10 @@
 ---
 **Stats:**
 - Total Tasks: 32
-- Completed: 23
-- % Complete: 71%
-- Completed Effort: 24.5h
-- Pending Effort: 7.5h
+- Completed: 24
+- % Complete: 75%
+- Completed Effort: 25.7h
+- Pending Effort: 6.3h
 
 | Task ID | Description | Status | Est. Time | Time Taken |
 |---------|-------------|--------|-----------|------------|
@@ -75,7 +75,7 @@
 - **F7.1** (1.5h): Implement Navbar (logo, navigation, date display) in HTML and style in `components.css`. Example: `<nav><img src="logo.svg"> <span>Indian Stock Market Heatmap</span> <span id="date"></span></nav>` | ✅ | 1.5h | 1h |
 - **F7.2** (1.5h): Implement Index Selector as segmented control in HTML and JS. Example: `<button data-index="NIFTY50">Nifty 50</button>`; add event listeners in JS. | ✅ | 1.5h | 1h |
 - **F7.3** (2h): Implement Date Picker with calendar overlay and focus states using vanilla JS. Example: `<input type="date" id="datepicker">` and style overlay in CSS. | ✅ | 2h | 0.3h |
-- **F7.4** (1.5h): Implement responsive Grid Layout for heatmap/treemap in `layouts.css`. Example: CSS grid with 12 columns for desktop, 1 column for mobile.
+- **F7.4** (1.5h): Implemented responsive CSS Grid for #treemap in layouts.css: 12 columns on desktop, 4 on tablet, 1 on mobile. Added Cypress test for layout responsiveness. | ✅ | 1.5h | 0.2h |
 - **F7.5** (2h): Implement Card, Pill/Tag, Tabs, Accordion, Ad Slot, Mobile Navigation, Snapshot Cards, Mobile Sheet Modal as per frontend-design.md, each as separate HTML/CSS components.
 
 ### 8. API Integration (with tested backend)

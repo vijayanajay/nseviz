@@ -13,3 +13,28 @@
     gap: 8px;
   }
 }
+
+/* Responsive Grid Layout for Heatmap/Treemap (F7.4) */
+#treemap {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr); /* 12 columns for desktop */
+  gap: 12px;
+  width: 100%;
+  min-height: 400px;
+  margin: 0 auto;
+  padding: 16px 0;
+}
+
+@media (max-width: 900px) {
+  #treemap {
+    grid-template-columns: repeat(4, 1fr); /* 4 columns for tablets */
+  }
+}
+
+@media (max-width: 600px) {
+  #treemap {
+    grid-template-columns: 1fr; /* 1 column for mobile */
+    gap: 8px;
+    padding: 8px 0;
+  }
+}
