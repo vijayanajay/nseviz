@@ -47,7 +47,20 @@ GET /api/heatmap-data?index=NIFTY50&sector=FINANCE&date=2024-04-01
       "change": -0.8,
       "volume": 7654321
     }
-  ]
+  ],
+  "note": "Records returned: 2"
+}
+```
+
+## Example Successful Response (No Data)
+
+```json
+{
+  "index": "NIFTY50",
+  "sector": "FINANCE",
+  "date": "2024-04-02",
+  "data": [],
+  "note": "No data available for the given parameters."
 }
 ```
 
@@ -91,4 +104,5 @@ GET /api/heatmap-data?index=NIFTY50&sector=FINANCE&date=2024-04-01
 - All responses are JSON.
 - All errors follow the structured error format above.
 - Only GET requests are supported.
+- The `note` field is always present in successful responses. It provides a human-readable summary of the data result for debugging and UI.
 - For more details, see the backend implementation and tests.

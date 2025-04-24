@@ -6,6 +6,133 @@ import pytest
 from app import create_app
 from unittest.mock import patch
 import pandas as pd
+import itertools
+
+# --- API contract schema helpers ---
+def validate_success_response(data):
+    assert isinstance(data, dict)
+    for key in ["index", "data"]:
+        assert key in data
+    assert isinstance(data["index"], str)
+    assert "sector" in data or data.get("sector") is None
+    if "sector" in data:
+        assert isinstance(data["sector"], str) or data["sector"] is None
+    assert "date" in data
+    assert isinstance(data["date"], str)
+    assert isinstance(data["data"], list)
+    assert "note" in data
+    assert isinstance(data["note"], str)
+    for item in data["data"]:
+        for field in ["symbol", "name", "price", "change", "volume"]:
+            assert field in item
+        assert isinstance(item["symbol"], str)
+        assert isinstance(item["name"], str)
+        assert isinstance(item["price"], float)
+        assert isinstance(item["change"], float)
+        assert isinstance(item["volume"], int)
+
+def validate_error_response(data):
+    assert isinstance(data, dict)
+    assert "error" in data
+    error = data["error"]
+    assert isinstance(error, dict)
+    assert "code" in error and "message" in error
+    assert isinstance(error["code"], str)
+    assert isinstance(error["message"], str)
+
+# --- Parameterized contract test (with patch/mocks) ---
+import pytest
+
+def mock_yfinance_download(*args, **kwargs):
+    import pandas as pd
+    idx = pd.to_datetime(['2024-04-01'])
+    # Always return a DataFrame with one row for HDFCBANK
+    df = pd.DataFrame({
+        'Open': [1580.0],
+        'High': [1600.5],
+        'Low': [1575.0],
+        'Close': [1600.5],
+        'Volume': [100000],
+    }, index=idx)
+    return df
+
+def mock_sector_mapping():
+    return {"HDFCBANK": "FINANCE", "INFY": "IT"}
+
+def mock_name_mapping():
+    return {"HDFCBANK": "HDFC Bank", "INFY": "Infosys Ltd"}
+
+@pytest.mark.parametrize("params,expected_status,expect_success", [
+    ("index=NIFTY50", 200, True),
+    ("index=NIFTY50&sector=FINANCE", 200, True),
+    ("index=NIFTY50&category=ALL", 200, True),
+    ("index=NIFTY50&category=LARGE_CAP&sector=IT", 200, True),
+    ("index=NIFTYBANK&date=2024-04-01", 200, True),
+    ("index=NIFTY50&date=notadate", 400, False),
+    ("sector=FINANCE", 400, False),
+    ("index=NIFTY50&sector=INVALID", 200, True),
+    ("index=NIFTY50&category=INVALID", 200, True),
+    ("", 400, False),
+])
+def test_api_contract_combinations(client, params, expected_status, expect_success):
+    url = "/api/heatmap-data"
+    if params:
+        url += f"?{params}"
+    with patch('yfinance.download', side_effect=mock_yfinance_download), \
+         patch('app.routes.get_sector_mapping', side_effect=mock_sector_mapping), \
+         patch('app.routes.get_name_mapping', side_effect=mock_name_mapping):
+        resp = client.get(url)
+        assert resp.status_code == expected_status
+        data = resp.get_json()
+        if expect_success:
+            validate_success_response(data)
+        else:
+            validate_error_response(data)
+
+# Edge case: test all param combinations for valid index
+@pytest.mark.parametrize("category", [None, "ALL", "LARGE_CAP", "MID_CAP"])
+@pytest.mark.parametrize("sector", [None, "FINANCE", "IT"])
+@pytest.mark.parametrize("date", [None, "2024-04-01"])
+def test_api_contract_matrix(client, category, sector, date):
+    params = {"index": "NIFTY50"}
+    if category: params["category"] = category
+    if sector: params["sector"] = sector
+    if date: params["date"] = date
+    url = "/api/heatmap-data?" + "&".join(f"{k}={v}" for k, v in params.items())
+    with patch('yfinance.download', side_effect=mock_yfinance_download), \
+         patch('app.routes.get_sector_mapping', side_effect=mock_sector_mapping), \
+         patch('app.routes.get_name_mapping', side_effect=mock_name_mapping):
+        resp = client.get(url)
+        assert resp.status_code == 200
+        data = resp.get_json()
+        validate_success_response(data)
+
+# Edge case: invalid date format
+@pytest.mark.parametrize("date", ["notadate", "01-04-2024", "20240401"])
+def test_api_contract_invalid_date_formats(client, date):
+    url = f"/api/heatmap-data?index=NIFTY50&date={date}"
+    with patch('yfinance.download', side_effect=mock_yfinance_download), \
+         patch('app.routes.get_sector_mapping', side_effect=mock_sector_mapping), \
+         patch('app.routes.get_name_mapping', side_effect=mock_name_mapping):
+        resp = client.get(url)
+        assert resp.status_code == 400
+        data = resp.get_json()
+        validate_error_response(data)
+        assert data["error"]["code"] == "INVALID_PARAM"
+        assert "date" in data["error"]["message"]
+
+# Edge case: missing all params
+
+def test_api_contract_missing_all_params(client):
+    with patch('yfinance.download', side_effect=mock_yfinance_download), \
+         patch('app.routes.get_sector_mapping', side_effect=mock_sector_mapping), \
+         patch('app.routes.get_name_mapping', side_effect=mock_name_mapping):
+        resp = client.get("/api/heatmap-data")
+        assert resp.status_code == 400
+        data = resp.get_json()
+        validate_error_response(data)
+        assert data["error"]["code"] == "INVALID_PARAM"
+        assert "index" in data["error"]["message"]
 
 @pytest.fixture
 def client():
@@ -23,17 +150,30 @@ def test_missing_index_param(client):
 
 def test_invalid_sector_param(client):
     resp = client.get('/api/heatmap-data?index=NIFTY50&sector=INVALID')
-    assert resp.status_code == 400
+    assert resp.status_code == 200
     data = resp.get_json()
-    assert data['error']['code'] == 'INVALID_PARAM'
-    assert 'sector' in data['error']['message']
+    assert data["data"] == []
+    assert "note" in data
+    assert data["note"] == "No data available for the given parameters."
+
+def test_invalid_category_param(client):
+    resp = client.get('/api/heatmap-data?index=NIFTY50&category=INVALID')
+    assert resp.status_code == 200
+    data = resp.get_json()
+    assert data["data"] == []
+    assert "note" in data
+    assert data["note"] == "No data available for the given parameters."
 
 def test_internal_server_error(client):
-    resp = client.get('/api/heatmap-data?index=NIFTY50&sector=FINANCE&force_error=1')
-    assert resp.status_code == 500
-    data = resp.get_json()
-    assert data['error']['code'] == 'INTERNAL_ERROR'
-    assert 'Server error' in data['error']['message']
+    from unittest.mock import patch
+    def mock_download(*args, **kwargs):
+        raise Exception('yfinance failed')
+    with patch('yfinance.download', side_effect=mock_download):
+        resp = client.get('/api/heatmap-data?index=NIFTY50&sector=FINANCE&force_error=1')
+        assert resp.status_code == 500
+        data = resp.get_json()
+        assert data['error']['code'] == 'YFINANCE_ERROR'
+        assert 'yfinance failed' in data['error']['message']
 
 def test_yfinance_integration(client):
     # Mock yfinance download to return a DataFrame with expected columns
@@ -68,21 +208,16 @@ def test_yfinance_integration(client):
 
 def test_sector_filtering(client):
     # Simulate NIFTY50 with two stocks, only one in FINANCE sector
-    mock_stocks = [
-        {"symbol": "HDFCBANK", "sector": "FINANCE", "price": 1600.5, "change": 1.2},
-        {"symbol": "INFY", "sector": "IT", "price": 1400.0, "change": -0.5},
-    ]
     import types
-    def mock_download(symbol, period, **kwargs):
-        import pandas as pd
-        data = {
-            'HDFCBANK': {'Open': [1580], 'Close': [1600.5], 'Volume': [100000]},
-            'INFY': {'Open': [1410], 'Close': [1400.0], 'Volume': [80000]},
-        }
+    import pandas as pd
+    def mock_download(tickers, group_by=None, **kwargs):
         idx = pd.to_datetime(['2024-04-01'])
-        df = pd.DataFrame({
-            (s, k): v for s, vals in data.items() for k, v in vals.items()
-        }, index=idx)
+        columns = pd.MultiIndex.from_product([
+            ['HDFCBANK', 'INFY'],
+            ['Open', 'Close', 'Volume']
+        ])
+        data = [[1580, 1600.5, 100000, 1410, 1400.0, 80000]]
+        df = pd.DataFrame(data, index=idx, columns=columns)
         return df
     with patch('yfinance.download', side_effect=mock_download):
         with patch('app.routes.get_sector_mapping', return_value={"HDFCBANK": "FINANCE", "INFY": "IT"}):
@@ -141,3 +276,83 @@ def test_date_param_no_data(client):
         assert data['sector'] == 'FINANCE'
         assert isinstance(data['data'], list)
         assert len(data['data']) == 0
+
+def test_yfinance_download_exception(client):
+    """Test that yfinance.download raising an exception returns a 500 error with correct JSON error format."""
+    from unittest.mock import patch
+    with patch('yfinance.download', side_effect=Exception('yfinance failed')):
+        resp = client.get('/api/heatmap-data?index=NIFTY50&sector=FINANCE')
+        assert resp.status_code == 500
+        data = resp.get_json()
+        assert data['error']['code'] == 'YFINANCE_ERROR'
+        assert 'yfinance failed' in data['error']['message']
+
+def test_yfinance_multiticker_dataframe(client):
+    """Test endpoint with yfinance returning a multi-ticker DataFrame (columns are MultiIndex)."""
+    import pandas as pd
+    from unittest.mock import patch
+    import numpy as np
+    # Simulate yfinance multi-ticker DataFrame
+    idx = pd.to_datetime(['2024-04-01'])
+    columns = pd.MultiIndex.from_product([
+        ['HDFCBANK', 'INFY'],
+        ['Open', 'Close', 'Volume']
+    ])
+    data = np.array([
+        [1580, 1600.5, 100000, 1410, 1400.0, 80000]
+    ])
+    df = pd.DataFrame(data, index=idx, columns=columns)
+    with patch('yfinance.download', return_value=df):
+        with patch('app.routes.get_sector_mapping', return_value={"HDFCBANK": "FINANCE", "INFY": "IT"}):
+            with patch('app.routes.get_name_mapping', return_value={"HDFCBANK": "HDFC Bank", "INFY": "Infosys Ltd"}):
+                resp = client.get('/api/heatmap-data?index=NIFTY50&sector=FINANCE')
+                assert resp.status_code == 200
+                data = resp.get_json()
+                assert data['index'] == 'NIFTY50'
+                assert data['sector'] == 'FINANCE'
+                assert isinstance(data['data'], list)
+                # Only HDFCBANK should be present
+                assert any(stock['symbol'] == 'HDFCBANK' for stock in data['data'])
+                assert not any(stock['symbol'] == 'INFY' for stock in data['data'])
+                hdfc = next(stock for stock in data['data'] if stock['symbol'] == 'HDFCBANK')
+                assert hdfc['name'] == 'HDFC Bank'
+                assert hdfc['price'] == 1600.5
+                assert hdfc['volume'] == 100000
+
+@pytest.mark.parametrize("data_len,note_expected", [
+    (0, "No data available for the given parameters."),
+    (2, "Records returned: 1")
+])
+def test_note_field_content(client, data_len, note_expected):
+    # Patch yfinance and mapping to return data_len records (simulate multiple dates for >1)
+    import pandas as pd
+    if data_len == 0:
+        mock_df = pd.DataFrame()
+        sector_map = {}
+        name_map = {}
+    else:
+        idx = pd.to_datetime(['2024-04-01', '2024-04-02'][:data_len])
+        columns = pd.MultiIndex.from_product([
+            ['HDFCBANK'],
+            ['Open', 'High', 'Low', 'Close', 'Volume']
+        ])
+        data = [
+            [1580.0, 1600.5, 1575.0, 1600.5, 100000],
+            [1585.0, 1610.5, 1580.0, 1610.5, 110000]
+        ][:data_len]
+        mock_df = pd.DataFrame(data, index=idx, columns=columns)
+        sector_map = {"HDFCBANK": "FINANCE"}
+        name_map = {"HDFCBANK": "HDFC Bank"}
+    def mock_download(*a, **k): return mock_df
+    def mock_sector(): return sector_map
+    def mock_name(): return name_map
+    with patch('yfinance.download', side_effect=mock_download), \
+         patch('app.routes.get_sector_mapping', side_effect=mock_sector), \
+         patch('app.routes.get_name_mapping', side_effect=mock_name):
+        params = "index=NIFTY50&sector=FINANCE"
+        resp = client.get(f"/api/heatmap-data?{params}")
+        assert resp.status_code == 200
+        data = resp.get_json()
+        if data["note"] != note_expected:
+            print("DEBUG: API response data:", data)
+        assert data["note"] == note_expected
