@@ -3,10 +3,10 @@
 ---
 **Stats:**
 - Total Tasks: 32
-- Completed: 13
-- % Complete: 41%
-- Completed Effort: 16h
-- Pending Effort: 16h
+- Completed: 14
+- % Complete: 44%
+- Completed Effort: 18h
+- Pending Effort: 14h
 
 | Task ID | Description | Status | Est. Time | Time Taken |
 |---------|-------------|--------|-----------|------------|
@@ -22,7 +22,7 @@
 | B3.4    | Implement support for date-based data fetching (latest and historical). Example: `/api/heatmap-data?date=2024-04-01` returns data for that date. | ✅ | 1.5h      | 1h         |
 | B4.1    | Write unit tests for /api/heatmap-data (mock data) using `pytest`. Example: test valid response, test invalid sector param. | ✅ | 1h        | 1h         |
 | B4.2    | Write unit tests for /api/heatmap-data (yfinance data) using `pytest` and `unittest.mock` to mock yfinance calls. | ✅ | 1.5h      | 1.5h         |
-| B4.3    | Implement automated API contract tests using `pytest` and `requests` to ensure endpoint returns correct schema for all query param combinations. |  | 2h        |            |
+| B4.3    | Implement automated API contract tests using `pytest` and `requests` to ensure endpoint returns correct schema for all query param combinations. | ✅ | 2h        | 2h         |
 | B4.4    | Add logging for requests and errors using Python's `logging` module. Log every request and error with timestamp and params. | ✅ | 1h        | 1h         |
 | B4.5    | Refactor code for clarity and maintainability: add docstrings, type hints, and inline comments. Example: `def get_heatmap_data(index: str, sector: str) -> dict:` |  | 1.5h      |            |
 
@@ -72,6 +72,11 @@
 - All backend logging tests for `/api/heatmap-data` now pass after aligning test expectations to actual log output (params as dict).
 - No implementation changes were needed; only the test assertion was updated, following TDD and Kailash Nadh’s philosophy.
 - All 53 backend tests now pass. Backend is robust and ready for frontend handover.
+
+## [2025-04-25] Backend API Contract Edge Cases Complete
+- Automated contract tests for /api/heatmap-data now cover all query param edge cases (empty, repeated, unknown, long, whitespace, invalid-type).
+- Backend now rejects repeated critical params with structured 400 JSON error.
+- All tests pass (58/58). Backend contract is robust and ready for frontend handover.
 
 ---
 

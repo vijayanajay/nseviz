@@ -73,6 +73,12 @@ def heatmap_data():
         # Direct root logger log
         import logging as pylogging
         pylogging.info(f"[DIRECT] Request: {request.method} {request.path} params={dict(request.args)}")
+        # Check for repeated critical query parameters
+        critical_params = ["index", "sector", "category", "date"]
+        for param in critical_params:
+            if len(request.args.getlist(param)) > 1:
+                logger.error(f"Repeated query parameter: {param}")
+                return jsonify(error={"code": "INVALID_PARAM", "message": f"Repeated query parameter: {param}"}), 400
         # Validate required params
         index = request.args.get("index")
         if not index:

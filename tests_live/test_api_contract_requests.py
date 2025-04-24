@@ -60,6 +60,26 @@ def test_api_contract_combinations(params, expected_status, expect_success):
     else:
         validate_error_response(data)
 
+@pytest.mark.parametrize("params,expected_status,expect_success", [
+    ("index=", 400, False),
+    ("index=NIFTY50&foo=bar", 200, True),
+    ("index=NIFTY50&index=FOO", 400, False),
+    ("index=NIFTY50&sector=123", 200, True),
+    ("index=" + "A"*512, 400, False),
+    ("index=NIFTY50&sector= ", 200, True),
+])
+def test_api_contract_edge_cases(params, expected_status, expect_success):
+    url = BASE_URL
+    if params:
+        url += f"?{params}"
+    resp = requests.get(url)
+    assert resp.status_code == expected_status
+    data = resp.json()
+    if expect_success:
+        validate_success_response(data)
+    else:
+        validate_error_response(data)
+
 @pytest.mark.parametrize("category", [None, "ALL", "LARGE_CAP", "MID_CAP"])
 @pytest.mark.parametrize("sector", [None, "FINANCE", "IT"])
 @pytest.mark.parametrize("date", [None, "2024-04-01"])

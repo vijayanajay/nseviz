@@ -411,3 +411,26 @@ def test_logging_requests_and_errors(tmp_path, capsys):
             handler.close()
     # Clean up
     del os.environ['NSEVIZ_LOG_FILE']
+
+@pytest.mark.parametrize("params,expected_status,expect_success", [
+    ("index=", 400, False),
+    ("index=NIFTY50&foo=bar", 200, True),
+    ("index=NIFTY50&index=FOO", 400, False),
+    ("index=NIFTY50&sector=123", 200, True),
+    ("index=" + "A"*512, 400, False),
+    ("index=NIFTY50&sector= ", 200, True),
+])
+def test_api_contract_edge_cases(client, params, expected_status, expect_success):
+    url = "/api/heatmap-data"
+    if params:
+        url += f"?{params}"
+    with patch('yfinance.download', side_effect=mock_yfinance_download), \
+         patch('app.routes.get_sector_mapping', side_effect=mock_sector_mapping), \
+         patch('app.routes.get_name_mapping', side_effect=mock_name_mapping):
+        resp = client.get(url)
+        assert resp.status_code == expected_status
+        data = resp.get_json()
+        if expect_success:
+            validate_success_response(data)
+        else:
+            validate_error_response(data)
