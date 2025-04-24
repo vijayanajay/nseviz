@@ -3,10 +3,10 @@
 ---
 **Stats:**
 - Total Tasks: 32
-- Completed: 10
-- % Complete: 31%
-- Completed Effort: 12.5h
-- Pending Effort: 19.5h
+- Completed: 11
+- % Complete: 34%
+- Completed Effort: 13.5h
+- Pending Effort: 18.5h
 
 | Task ID | Description | Status | Est. Time | Time Taken |
 |---------|-------------|--------|-----------|------------|
@@ -20,6 +20,11 @@
 | B3.2    | Implement logic to filter/group yfinance data by category, index, sector as per query params. Example: filter stocks in the FINANCE sector from NIFTY50. | ✅ | 1.5h      | 1.5h        |
 | B3.3    | Transform raw yfinance data to the frontend schema: include symbol, name, price, change %, volume, etc. Example output: `[ { "symbol": "HDFCBANK", "name": "HDFC Bank", "price": 1600.5, "change": 1.2 } ]`. | ✅ | 2h        | 1h         |
 | B3.4    | Implement support for date-based data fetching (latest and historical). Example: `/api/heatmap-data?date=2024-04-01` returns data for that date. | ✅ | 1.5h      | 1h         |
+| B4.1    | Write unit tests for /api/heatmap-data (mock data) using `pytest`. Example: test valid response, test invalid sector param. | ✅ | 1h        | 1h         |
+| B4.2    | Write unit tests for /api/heatmap-data (yfinance data) using `pytest` and `unittest.mock` to mock yfinance calls. |  | 1.5h      |            |
+| B4.3    | Implement automated API contract tests using `pytest` and `requests` to ensure endpoint returns correct schema for all query param combinations. |  | 2h        |            |
+| B4.4    | Add logging for requests and errors using Python's `logging` module. Log every request and error with timestamp and params. |  | 1h        |            |
+| B4.5    | Refactor code for clarity and maintainability: add docstrings, type hints, and inline comments. Example: `def get_heatmap_data(index: str, sector: str) -> dict:` |  | 1.5h      |            |
 
 *Update Time Taken column as tasks are completed.*
 
@@ -44,7 +49,7 @@
 - **B3.4** (1.5h): Implement support for date-based data fetching (latest and historical). Example: `/api/heatmap-data?date=2024-04-01` returns data for that date. ✅
 
 ### 4. Automated Testing & Validation
-- **B4.1** (1h): Write unit tests for `/api/heatmap-data` (mock data) using `pytest`. Example: test valid response, test invalid sector param.
+- **B4.1** (1h): Write unit tests for `/api/heatmap-data` (mock data) using `pytest`. Example: test valid response, test invalid sector param. ✅
 - **B4.2** (1.5h): Write unit tests for `/api/heatmap-data` (yfinance data) using `pytest` and `unittest.mock` to mock yfinance calls.
 - **B4.3** (2h): Implement automated API contract tests using `pytest` and `requests` to ensure endpoint returns correct schema for all query param combinations.
 - **B4.4** (1h): Add logging for requests and errors using Python's `logging` module. Log every request and error with timestamp and params.
