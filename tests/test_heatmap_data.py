@@ -7,6 +7,7 @@ from app import create_app
 from unittest.mock import patch
 import pandas as pd
 import itertools
+import logging
 
 # --- API contract schema helpers ---
 def validate_success_response(data):
@@ -139,6 +140,8 @@ def client():
     app = create_app()
     app.testing = True
     app.config["PROPAGATE_EXCEPTIONS"] = False
+    # Ensure app.logger logs propagate to root logger for caplog
+    app.logger.propagate = True
     return app.test_client()
 
 def test_missing_index_param(client):
@@ -356,3 +359,55 @@ def test_note_field_content(client, data_len, note_expected):
         if data["note"] != note_expected:
             print("DEBUG: API response data:", data)
         assert data["note"] == note_expected
+
+def test_logging_requests_and_errors(tmp_path, capsys):
+    """Test that requests and errors are logged with timestamp and params."""
+    import logging
+    import importlib
+    log_file = tmp_path / "test_api.log"
+    os.environ['NSEVIZ_LOG_FILE'] = str(log_file)
+    # Reload app.__init__ so logging config is picked up
+    import app.__init__ as app_init
+    importlib.reload(app_init)
+    app = app_init.create_app()
+    client = app.test_client()
+    root_logger = logging.getLogger()
+    print('ROOT LOGGER HANDLERS before requests:', root_logger.handlers)
+    # Now run tests as before
+    # Successful request
+    resp = client.get('/api/heatmap-data?index=NIFTY50&sector=FINANCE')
+    assert resp.status_code == 200
+    print('ROOT LOGGER HANDLERS after successful request:', root_logger.handlers)
+    with open(log_file) as f:
+        log_contents = f.read()
+    print('LOG FILE CONTENTS after successful request:', log_contents)
+    assert 'Request:' in log_contents and '/api/heatmap-data' in log_contents and "'index': 'NIFTY50'" in log_contents, \
+        f"Request log entry missing in log file. log_contents={log_contents}"
+    # Error request (invalid param)
+    resp = client.get('/api/heatmap-data?sector=FINANCE')
+    assert resp.status_code == 400
+    print('ROOT LOGGER HANDLERS after error request:', root_logger.handlers)
+    with open(log_file) as f:
+        log_contents = f.read()
+    print('LOG FILE CONTENTS after error request:', log_contents)
+    assert 'Missing required parameter: index' in log_contents, "Error log entry missing for invalid param in log file."
+    # Internal error (simulate yfinance failure)
+    from unittest.mock import patch
+    with patch('yfinance.download', side_effect=Exception('yfinance failed')):
+        resp = client.get('/api/heatmap-data?index=NIFTY50&sector=FINANCE')
+        assert resp.status_code == 500
+        print('ROOT LOGGER HANDLERS after internal error:', root_logger.handlers)
+        with open(log_file) as f:
+            log_contents = f.read()
+        print('LOG FILE CONTENTS after internal error:', log_contents)
+        assert 'yfinance error: yfinance failed' in log_contents, "Internal error log entry missing for yfinance failure in log file."
+    # Optionally, check print diagnostics with capsys
+    captured = capsys.readouterr()
+    assert 'LOGGER DIAG:' in captured.out, "Logger diagnostic print not seen in captured output."
+    # Flush and close all handlers
+    for handler in root_logger.handlers:
+        handler.flush()
+        if hasattr(handler, 'close'):
+            handler.close()
+    # Clean up
+    del os.environ['NSEVIZ_LOG_FILE']

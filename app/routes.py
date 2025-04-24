@@ -2,6 +2,8 @@ from flask import Blueprint, jsonify, request, current_app
 from flask_cors import CORS
 import yfinance as yf
 from datetime import datetime
+import logging
+import os
 
 api_bp = Blueprint('api', __name__)
 CORS(api_bp)  # Explicitly enable CORS on the blueprint
@@ -9,7 +11,8 @@ CORS(api_bp)  # Explicitly enable CORS on the blueprint
 # --- Error Handlers ---
 @api_bp.errorhandler(500)
 def handle_internal_error(e):
-    current_app.logger.error(f"Internal error: {e}")
+    logger = logging.getLogger()
+    logger.error(f"Internal error: {e}")
     return jsonify(error={"code": "INTERNAL_ERROR", "message": "Server error"}), 500
 
 # --- Sector mapping helper ---
@@ -33,13 +36,47 @@ def get_name_mapping():
 # --- Endpoint ---
 @api_bp.route('/api/heatmap-data', methods=['GET', 'OPTIONS'])
 def heatmap_data():
+    logger = logging.getLogger()
     # For CORS preflight OPTIONS requests, return 200
     if request.method == 'OPTIONS':
         return '', 200
     try:
+        # Attach file handler directly if env var is set (for test robustness)
+        log_file = os.environ.get('NSEVIZ_LOG_FILE')
+        if log_file:
+            # Remove any existing FileHandlers for this log file to avoid duplicates
+            handlers_to_remove = []
+            for h in logger.handlers:
+                if isinstance(h, logging.FileHandler) and getattr(h, 'baseFilename', None) == log_file:
+                    handlers_to_remove.append(h)
+            for h in handlers_to_remove:
+                logger.removeHandler(h)
+                h.close()
+            fh = logging.FileHandler(log_file, mode='a')
+            fh.setLevel(logging.INFO)
+            fh.setFormatter(logging.Formatter('%(asctime)s %(levelname)s %(message)s'))
+            logger.addHandler(fh)
+            logger.setLevel(logging.INFO)
+            print(f'LOGGER HANDLERS in endpoint: {logger.handlers}')
+        # Debug log the logger name and handlers for diagnosis
+        logger.debug(f"Logger name in use: {logger.name}")
+        logger.debug(f"Logger handlers: {logger.handlers}")
+        print(f'LOGGER DIAG: name={logger.name}, handlers={logger.handlers}')
+        # Log every request with timestamp and params
+        logger.info(f"Request: {request.method} {request.path} params={dict(request.args)}")
+        logger.error(f"[DIAG] After INFO log: logger.level={logger.level}, effective={logger.getEffectiveLevel()}, handlers=[{', '.join(str((type(h), getattr(h, 'baseFilename', None), h.level)) for h in logger.handlers)}]")
+        print(f'[DIAG] After INFO log: logger.level={logger.level}, effective={logger.getEffectiveLevel()}, handlers=[{", ".join(str((type(h), getattr(h, "baseFilename", None), h.level)) for h in logger.handlers)}]')
+        # Flush all handlers to ensure log is written
+        for h in logger.handlers:
+            if hasattr(h, 'flush'):
+                h.flush()
+        # Direct root logger log
+        import logging as pylogging
+        pylogging.info(f"[DIRECT] Request: {request.method} {request.path} params={dict(request.args)}")
         # Validate required params
         index = request.args.get("index")
         if not index:
+            logger.error("Missing required parameter: index")
             return jsonify(error={"code": "INVALID_PARAM", "message": "Missing required parameter: index"}), 400
         sector = request.args.get("sector")
         category = request.args.get("category")
@@ -52,11 +89,13 @@ def heatmap_data():
                 # Validate date format
                 datetime.strptime(date, "%Y-%m-%d")
             except ValueError:
+                logger.error(f"Invalid date format: {date}")
                 return jsonify(error={"code": "INVALID_PARAM", "message": f"Invalid date format: {date}"}), 400
         # Validate sector/category only if provided (do not reject unknown sector/category, just return empty)
         valid_indices = {"NIFTY50": ["HDFCBANK", "INFY"], "NIFTYBANK": ["HDFCBANK"]}  # Example mapping
         valid_sectors = {"FINANCE", "IT", "AUTO"}  # Example, extend as needed
         if index not in valid_indices:
+            logger.error(f"Invalid index: {index}")
             return jsonify(error={"code": "INVALID_PARAM", "message": f"Invalid index: {index}"}), 400
         # Fetch data (mocked or real)
         tickers = valid_indices[index]
@@ -100,5 +139,5 @@ def heatmap_data():
             response["note"] = f"Records returned: {len(result)}"
         return jsonify(response), 200
     except Exception as e:
-        current_app.logger.error(f"yfinance error: {e}")
+        logger.error(f"yfinance error: {e}")
         return jsonify(error={"code": "YFINANCE_ERROR", "message": str(e)}), 500
