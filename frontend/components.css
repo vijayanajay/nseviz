@@ -24,3 +24,22 @@
   font-size: 1rem;
   color: #666;
 }
+
+/* Date Picker Styles (F7.3) */
+#datepicker {
+  margin-left: 24px;
+  padding: 6px 12px;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  font-size: 1rem;
+  background: #fafbfc;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+#datepicker.focus,
+#datepicker:focus {
+  border-color: #1976d2;
+  box-shadow: 0 0 0 2px #1976d230;
+  outline: none;
+  background: #fff;
+  z-index: 2;
+}

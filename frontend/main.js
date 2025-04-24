@@ -21,3 +21,35 @@ window.renderIndexSelector = function(indices = ['NIFTY50', 'NIFTYBANK', 'NIFTYI
     container.appendChild(btn);
   });
 };
+
+// Date Picker Logic (F7.3)
+let datePickerValue = '';
+
+function setupDatePicker() {
+  const input = document.getElementById('datepicker');
+  if (!input) return;
+  input.value = '';
+  input.addEventListener('change', () => {
+    datePickerValue = input.value;
+  });
+  input.addEventListener('focus', () => {
+    input.classList.add('focus');
+  });
+  input.addEventListener('blur', () => {
+    input.classList.remove('focus');
+  });
+}
+
+function getDatePickerValue() {
+  return datePickerValue;
+}
+
+// Export for Jest tests (CommonJS compatibility)
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { setupDatePicker, getDatePickerValue };
+}
+
+// Initialize on DOMContentLoaded
+if (typeof window !== 'undefined') {
+  window.addEventListener('DOMContentLoaded', setupDatePicker);
+}

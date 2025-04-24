@@ -3,10 +3,10 @@
 ---
 **Stats:**
 - Total Tasks: 32
-- Completed: 22
-- % Complete: 68%
-- Completed Effort: 24.2h
-- Pending Effort: 7.8h
+- Completed: 23
+- % Complete: 71%
+- Completed Effort: 24.5h
+- Pending Effort: 7.5h
 
 | Task ID | Description | Status | Est. Time | Time Taken |
 |---------|-------------|--------|-----------|------------|
@@ -74,7 +74,7 @@
 ### 7. Core Components (UI Skeleton)
 - **F7.1** (1.5h): Implement Navbar (logo, navigation, date display) in HTML and style in `components.css`. Example: `<nav><img src="logo.svg"> <span>Indian Stock Market Heatmap</span> <span id="date"></span></nav>` | ✅ | 1.5h | 1h |
 - **F7.2** (1.5h): Implement Index Selector as segmented control in HTML and JS. Example: `<button data-index="NIFTY50">Nifty 50</button>`; add event listeners in JS. | ✅ | 1.5h | 1h |
-- **F7.3** (2h): Implement Date Picker with calendar overlay and focus states using vanilla JS. Example: `<input type="date" id="datepicker">` and style overlay in CSS.
+- **F7.3** (2h): Implement Date Picker with calendar overlay and focus states using vanilla JS. Example: `<input type="date" id="datepicker">` and style overlay in CSS. | ✅ | 2h | 0.3h |
 - **F7.4** (1.5h): Implement responsive Grid Layout for heatmap/treemap in `layouts.css`. Example: CSS grid with 12 columns for desktop, 1 column for mobile.
 - **F7.5** (2h): Implement Card, Pill/Tag, Tabs, Accordion, Ad Slot, Mobile Navigation, Snapshot Cards, Mobile Sheet Modal as per frontend-design.md, each as separate HTML/CSS components.
 
@@ -100,6 +100,14 @@
 ### 11. Final Review & Handover
 - **F11.1** (1h): Ensure all frontend automated tests pass (Jest, Cypress, Stylelint). Example: run `npm test` and `npx cypress run`.
 - **F11.2** (1h): Prepare frontend handover checklist: all tests passing, code linted, documentation complete.
+
+---
+## [2025-04-25] F7.3 Complete: Date Picker
+- Added `<input type="date" id="datepicker">` to navbar in index.html.
+- Implemented focus/blur/overlay logic in main.js with TDD (Jest tests).
+- Styled date picker and overlay in components.css and made responsive in layouts.css.
+- All tests pass; code is linted and documented.
+- Time taken: 0.3h (TDD, minimal, per spec).
 
 ---
 ## [2025-04-25] Frontend Navbar Implementation & Automated Testing
