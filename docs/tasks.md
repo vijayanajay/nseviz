@@ -3,10 +3,10 @@
 ---
 **Stats:**
 - Total Tasks: 32
-- Completed: 6
-- % Complete: 19%
-- Completed Effort: 7.5h
-- Pending Effort: 24.5h
+- Completed: 7
+- % Complete: 22%
+- Completed Effort: 9h
+- Pending Effort: 23h
 
 | Task ID | Description | Status | Est. Time | Time Taken |
 |---------|-------------|--------|-----------|------------|
@@ -16,6 +16,10 @@
 | B1.4    | Set up CORS in Flask using flask-cors to allow frontend JS access | ✅ | 1h        | 1h         |
 | B2.1    | Implement /api/heatmap-data endpoint in routes.py that returns static/mock JSON data matching the documented schema | ✅ | 1h        | 1h         |
 | B2.2    | Add error handling for the endpoint: return 400 for invalid params, 500 for server errors, with JSON error messages. Example: `{ "error": "Invalid sector" }`. | ✅ | 1h        | 1h         |
+| B3.1    | Use yfinance to fetch technical chart data for requested index/sector/stock. Example: `import yfinance as yf; yf.download('^NSEI', period='1d')`. | ✅ | 1.5h      | 1.5h        |
+| B3.2    | Implement logic to filter/group yfinance data by category, index, sector as per query params. Example: filter stocks in the FINANCE sector from NIFTY50. |  | 1.5h      |            |
+| B3.3    | Transform raw yfinance data to the frontend schema: include symbol, name, price, change %, volume, etc. Example output: `[ { "symbol": "HDFCBANK", "name": "HDFC Bank", "price": 1600.5, "change": 1.2 } ]`. |  | 2h        |            |
+| B3.4    | Implement support for date-based data fetching (latest and historical). Example: `/api/heatmap-data?date=2024-04-01` returns data for that date. |  | 1.5h      |            |
 
 *Update Time Taken column as tasks are completed.*
 
@@ -34,7 +38,7 @@
 - **B2.2** (1h): Add error handling for the endpoint: return 400 for invalid params, 500 for server errors, with JSON error messages. Example: `{ "error": "Invalid sector" }`. ✅
 
 ### 3. yfinance Integration
-- **B3.1** (1.5h): Use yfinance to fetch technical chart data for requested index/sector/stock. Example: `import yfinance as yf; yf.download('^NSEI', period='1d')`.
+- **B3.1** (1.5h): Use yfinance to fetch technical chart data for requested index/sector/stock. Example: `import yfinance as yf; yf.download('^NSEI', period='1d')`. ✅
 - **B3.2** (1.5h): Implement logic to filter/group yfinance data by category, index, sector as per query params. Example: filter stocks in the FINANCE sector from NIFTY50.
 - **B3.3** (2h): Transform raw yfinance data to the frontend schema: include symbol, name, price, change %, volume, etc. Example output: `[ { "symbol": "HDFCBANK", "name": "HDFC Bank", "price": 1600.5, "change": 1.2 } ]`.
 - **B3.4** (1.5h): Implement support for date-based data fetching (latest and historical). Example: `/api/heatmap-data?date=2024-04-01` returns data for that date.
