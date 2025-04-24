@@ -52,11 +52,19 @@ def test_yfinance_integration(client):
         assert data['sector'] == 'FINANCE'
         assert isinstance(data['data'], list)
         assert len(data['data']) > 0
-        # Example: check keys in first item
+        # Example: check keys and types in first item
         item = data['data'][0]
-        assert 'symbol' in item
-        assert 'price' in item
-        assert 'change' in item
+        for field in ['symbol', 'name', 'price', 'change', 'volume']:
+            assert field in item, f"Missing field: {field}"
+        assert isinstance(item['symbol'], str)
+        assert isinstance(item['name'], str)
+        assert isinstance(item['price'], float)
+        assert isinstance(item['change'], float)
+        assert isinstance(item['volume'], int)
+        # Check static name mapping
+        assert item['name'] == 'HDFC Bank' or item['name'] == 'Infosys Ltd'
+        # Check volume matches mock
+        assert item['volume'] == 100000
 
 def test_sector_filtering(client):
     # Simulate NIFTY50 with two stocks, only one in FINANCE sector
@@ -64,7 +72,6 @@ def test_sector_filtering(client):
         {"symbol": "HDFCBANK", "sector": "FINANCE", "price": 1600.5, "change": 1.2},
         {"symbol": "INFY", "sector": "IT", "price": 1400.0, "change": -0.5},
     ]
-    # Patch yfinance and sector mapping logic
     import types
     def mock_download(symbol, period, **kwargs):
         import pandas as pd
@@ -73,20 +80,25 @@ def test_sector_filtering(client):
             'INFY': {'Open': [1410], 'Close': [1400.0], 'Volume': [80000]},
         }
         idx = pd.to_datetime(['2024-04-01'])
-        # Return combined DataFrame for both stocks
         df = pd.DataFrame({
             (s, k): v for s, vals in data.items() for k, v in vals.items()
         }, index=idx)
         return df
     with patch('yfinance.download', side_effect=mock_download):
-        # Patch sector mapping (simulate only HDFCBANK is FINANCE)
         with patch('app.routes.get_sector_mapping', return_value={"HDFCBANK": "FINANCE", "INFY": "IT"}):
-            resp = client.get('/api/heatmap-data?index=NIFTY50&sector=FINANCE')
-            assert resp.status_code == 200
-            data = resp.get_json()
-            assert data['index'] == 'NIFTY50'
-            assert data['sector'] == 'FINANCE'
-            assert isinstance(data['data'], list)
-            # Only HDFCBANK should be present
-            assert any(stock['symbol'] == 'HDFCBANK' for stock in data['data'])
-            assert not any(stock['symbol'] == 'INFY' for stock in data['data'])
+            with patch('app.routes.get_name_mapping', return_value={"HDFCBANK": "HDFC Bank", "INFY": "Infosys Ltd"}):
+                resp = client.get('/api/heatmap-data?index=NIFTY50&sector=FINANCE')
+                assert resp.status_code == 200
+                data = resp.get_json()
+                assert data['index'] == 'NIFTY50'
+                assert data['sector'] == 'FINANCE'
+                assert isinstance(data['data'], list)
+                # Only HDFCBANK should be present
+                assert any(stock['symbol'] == 'HDFCBANK' for stock in data['data'])
+                assert not any(stock['symbol'] == 'INFY' for stock in data['data'])
+                # Validate schema for HDFCBANK
+                hdfc = next(stock for stock in data['data'] if stock['symbol'] == 'HDFCBANK')
+                for field in ['symbol', 'name', 'price', 'change', 'volume']:
+                    assert field in hdfc, f"Missing field: {field}"
+                assert hdfc['name'] == 'HDFC Bank'
+                assert hdfc['volume'] == 100000

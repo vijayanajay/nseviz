@@ -20,6 +20,15 @@ def get_sector_mapping():
         # Add more mappings as needed
     }
 
+# --- Name mapping helper ---
+def get_name_mapping():
+    # Static mapping for TDD/testing. In production, fetch from a DB or yfinance.Ticker().info
+    return {
+        "HDFCBANK": "HDFC Bank",
+        "INFY": "Infosys Ltd",
+        # Add more mappings as needed
+    }
+
 # --- Endpoint ---
 @api_bp.route('/api/heatmap-data', methods=['GET', 'OPTIONS'])
 def heatmap_data():
@@ -46,6 +55,7 @@ def heatmap_data():
         tickers = valid_indices[index]
         df = yf.download(tickers, period='1d', group_by='ticker')
         sector_map = get_sector_mapping()
+        name_map = get_name_mapping()
         result = []
         for symbol in tickers:
             if sector_map.get(symbol) != sector:
@@ -55,10 +65,14 @@ def heatmap_data():
             latest = stock_df.iloc[-1]
             price = float(latest['Close'])
             change = float(latest['Close'] - latest['Open']) / float(latest['Open']) * 100 if latest['Open'] else 0
+            volume = int(latest['Volume']) if 'Volume' in latest else 0
+            name = name_map.get(symbol, symbol)
             result.append({
                 "symbol": symbol,
+                "name": name,
                 "price": price,
-                "change": round(change, 2)
+                "change": round(change, 2),
+                "volume": volume
             })
         response = {
             "index": index,
