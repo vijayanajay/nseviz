@@ -59,8 +59,18 @@ GET /api/heatmap-data?index=NIFTY50&sector=FINANCE&date=2024-04-01
 ```json
 {
   "error": {
-    "code": "INVALID_PARAMETER",
-    "message": "Invalid sector specified."
+    "code": "INVALID_PARAM",
+    "message": "Invalid sector: FOOBAR"
+  }
+}
+```
+
+**Missing Parameter:**
+```json
+{
+  "error": {
+    "code": "INVALID_PARAM",
+    "message": "Missing required parameter: index"
   }
 }
 ```
@@ -70,7 +80,7 @@ GET /api/heatmap-data?index=NIFTY50&sector=FINANCE&date=2024-04-01
 {
   "error": {
     "code": "INTERNAL_ERROR",
-    "message": "An unexpected error occurred."
+    "message": "Server error"
   }
 }
 ```

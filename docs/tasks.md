@@ -3,10 +3,10 @@
 ---
 **Stats:**
 - Total Tasks: 32
-- Completed: 5
-- % Complete: 16%
-- Completed Effort: 6.5h
-- Pending Effort: 25.5h
+- Completed: 6
+- % Complete: 19%
+- Completed Effort: 7.5h
+- Pending Effort: 24.5h
 
 | Task ID | Description | Status | Est. Time | Time Taken |
 |---------|-------------|--------|-----------|------------|
@@ -15,6 +15,7 @@
 | B1.3    | Draft and document API contract in docs/api.md | ✅ | 2h        | 2h         |
 | B1.4    | Set up CORS in Flask using flask-cors to allow frontend JS access | ✅ | 1h        | 1h         |
 | B2.1    | Implement /api/heatmap-data endpoint in routes.py that returns static/mock JSON data matching the documented schema | ✅ | 1h        | 1h         |
+| B2.2    | Add error handling for the endpoint: return 400 for invalid params, 500 for server errors, with JSON error messages. Example: `{ "error": "Invalid sector" }`. | ✅ | 1h        | 1h         |
 
 *Update Time Taken column as tasks are completed.*
 
@@ -30,7 +31,7 @@
 
 ### 2. Endpoint Stub & Mock Data
 - **B2.1** (1h): Implement `/api/heatmap-data` endpoint in `routes.py` that returns static/mock JSON data matching the documented schema. Example response: `{ "index": "NIFTY50", "sector": "FINANCE", "data": [{ "symbol": "HDFCBANK", "change": 1.2, "price": 1600.5 }] }`. ✅
-- **B2.2** (1h): Add error handling for the endpoint: return 400 for invalid params, 500 for server errors, with JSON error messages. Example: `{ "error": "Invalid sector" }`.
+- **B2.2** (1h): Add error handling for the endpoint: return 400 for invalid params, 500 for server errors, with JSON error messages. Example: `{ "error": "Invalid sector" }`. ✅
 
 ### 3. yfinance Integration
 - **B3.1** (1.5h): Use yfinance to fetch technical chart data for requested index/sector/stock. Example: `import yfinance as yf; yf.download('^NSEI', period='1d')`.
