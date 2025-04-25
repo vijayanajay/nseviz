@@ -3,10 +3,10 @@
 ---
 **Stats:**
 - Total Tasks: 32
-- Completed: 25
-- % Complete: 78%
-- Completed Effort: 26.2h
-- Pending Effort: 5.8h
+- Completed: 26
+- % Complete: 81%
+- Completed Effort: 27.2h
+- Pending Effort: 4.8h
 
 | Task ID | Description | Status | Est. Time | Time Taken |
 |---------|-------------|--------|-----------|------------|
@@ -79,7 +79,7 @@
 - **F7.5** (2.5h): Implement Card, Pill/Tag, Tabs, Accordion, Ad Slot, Mobile Navigation, Snapshot Cards, Mobile Sheet Modal as per frontend-design.md, each as separate HTML/CSS components. | ✅ | 2.5h | 1.5h |
 
 ### 8. API Integration (with tested backend)
-- **F8.1** (1h): Implement JS fetch for `/api/heatmap-data` with query params (category, index, sector, date). Example: `fetch('/api/heatmap-data?index=NIFTY50&sector=FINANCE')` and parse JSON.
+- **F8.1** (1h): Implement JS fetch for `/api/heatmap-data` with query params (category, index, sector, date). Example: `fetch('/api/heatmap-data?index=NIFTY50&sector=FINANCE')` and parse JSON. | ✅ | 1h | 0.5h |
 - **F8.2** (1h): Display loading and error states in UI. Example: show spinner while loading, show error message on fetch failure.
 - **F8.3** (1.5h): Integrate real API data into D3.js treemap/heatmap. Example: pass fetched data to D3 layout function.
 
@@ -102,12 +102,11 @@
 - **F11.2** (1h): Prepare frontend handover checklist: all tests passing, code linted, documentation complete.
 
 ---
-## [2025-04-25] F7.3 Complete: Date Picker
-- Added `<input type="date" id="datepicker">` to navbar in index.html.
-- Implemented focus/blur/overlay logic in main.js with TDD (Jest tests).
-- Styled date picker and overlay in components.css and made responsive in layouts.css.
-- All tests pass; code is linted and documented.
-- Time taken: 0.3h (TDD, minimal, per spec).
+## [2025-04-25] F8.1 Complete: API Fetch Logic
+- Implemented fetchHeatmapData in main.js to call /api/heatmap-data with category, index, sector, date query params.
+- Wrote Jest unit tests for fetch logic, covering correct URL, JSON parsing, and error handling.
+- All tests pass; code is minimal, per TDD and Kailash Nadh’s philosophy.
+- Time taken: 0.5h (including tests).
 
 ---
 ## [2025-04-25] Frontend Navbar Implementation & Automated Testing

@@ -44,9 +44,28 @@ function getDatePickerValue() {
   return datePickerValue;
 }
 
+// Fetch heatmap data from backend API (F8.1)
+function fetchHeatmapData(params = {}) {
+  const q = new URLSearchParams();
+  if (params.category) q.append('category', params.category);
+  if (params.index) q.append('index', params.index);
+  if (params.sector) q.append('sector', params.sector);
+  if (params.date) q.append('date', params.date);
+  const url = '/api/heatmap-data?' + q.toString();
+  return fetch(url, { method: 'GET' })
+    .then(res => {
+      if (!res.ok) throw new Error(`API error: ${res.status} ${res.statusText}`);
+      return res.json();
+    });
+}
+
 // Export for Jest tests (CommonJS compatibility)
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { setupDatePicker, getDatePickerValue };
+  module.exports = {
+    setupDatePicker,
+    getDatePickerValue,
+    fetchHeatmapData
+  };
 }
 
 // Initialize on DOMContentLoaded

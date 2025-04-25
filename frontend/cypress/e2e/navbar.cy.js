@@ -1,6 +1,6 @@
 describe('Navbar UI', () => {
   beforeEach(() => {
-    cy.visit('frontend/index.html');
+    cy.visit('/');
   });
 
   it('shows logo, title, and date', () => {
