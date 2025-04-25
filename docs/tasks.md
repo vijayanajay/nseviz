@@ -3,10 +3,10 @@
 ---
 **Stats:**
 - Total Tasks: 38
-- Completed: 30
-- % Complete: 79%
-- Completed Effort: 31.4h
-- Pending Effort: 6.6h
+- Completed: 31
+- % Complete: 82%
+- Completed Effort: 32.4h
+- Pending Effort: 5.6h
 
 | Task ID | Description | Status | Est. Time | Time Taken |
 |---------|-------------|--------|-----------|------------|
@@ -38,7 +38,7 @@
 | F8.1    | Implement heatmap color legend UI in index.html per frontend-design.md. Test with Cypress. | ✅ | 1h | 0.5h |
 | F8.2    | Add sector/index dropdown filters with D3.js, fetch data from backend on change. Test with Jest & Cypress. | ✅ | 1.5h | 1.5h |
 | F8.3    | Implement responsive grid layout for heatmap using CSS Grid. Test with Cypress (viewport tests). | ✅ | 1h | 0.2h |
-| F8.4    | Add loading and error states in UI for API fetches. Test with Jest. | ⬜ | 0.5h |  |
+| F8.4    | Add loading and error states in UI for API fetches. Test with Jest. | ✅ | 0.5h | 0.5h |
 | F8.5    | Optimize frontend data fetch: debounce filter changes, show spinner. Test with Jest. | ⬜ | 0.5h |  |
 | F8.6    | Prepare production-ready frontend build (minify CSS/JS, update README deploy section). Test with build script. | ⬜ | 1h |  |
 | F9.1    | Set up D3.js treemap/heatmap with mock data. Example: use D3's `d3.treemap()` and render boxes in `#treemap` container. | ⬜ | 2h |  |
@@ -82,7 +82,7 @@
 - **F8.1** (1h): Implement heatmap color legend UI in index.html per frontend-design.md. Test with Cypress. | ✅ | 1h | 0.5h |
 - **F8.2** (1.5h): Add sector/index dropdown filters with D3.js, fetch data from backend on change. Test with Jest & Cypress. | ✅ | 1.5h | 1.5h |
 - **F8.3** (1h): Implement responsive grid layout for heatmap using CSS Grid. Test with Cypress (viewport tests). | ✅ | 1h | 0.2h |
-- **F8.4** (0.5h): Add loading and error states in UI for API fetches. Test with Jest. | ⬜ | 0.5h |  |
+- **F8.4** (0.5h): Add loading and error states in UI for API fetches. Test with Jest. | ✅ | 0.5h | 0.5h |
 - **F8.5** (0.5h): Optimize frontend data fetch: debounce filter changes, show spinner. Test with Jest. | ⬜ | 0.5h |  |
 - **F8.6** (1h): Prepare production-ready frontend build (minify CSS/JS, update README deploy section). Test with build script. | ⬜ | 1h |  |
 
