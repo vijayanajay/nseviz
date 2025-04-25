@@ -100,9 +100,20 @@ window.loadHeatmapData = function(params = {}) {
     });
 };
 
-// --- Dropdown Filters (F8.2) ---
+// Debounce utility (F8.5)
+function debounce(fn, delay) {
+  let timer = null;
+  return function(...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn.apply(this, args), delay);
+  };
+}
+
+// --- Dropdown Filters (F8.2 + F8.5 debounce) ---
 // Minimal implementation for TDD: renders <select> for index and sector using D3.js
 window.renderDropdownFilters = function({ indices = [], sectors = [], onChange = () => {} }) {
+  // Import d3 locally for Jest mocking
+  const d3 = require('d3');
   // Index dropdown
   const indexSel = d3.select('#index-dropdown');
   indexSel.selectAll('option').remove();
@@ -111,8 +122,10 @@ window.renderDropdownFilters = function({ indices = [], sectors = [], onChange =
     .join('option')
     .attr('value', d => d)
     .text(d => d);
+  // Debounced handler
+  const debouncedOnChange = debounce(onChange, 300);
   indexSel.on('change', function() {
-    onChange({ index: this.value });
+    debouncedOnChange({ index: this.value });
   });
 
   // Sector dropdown
@@ -124,7 +137,7 @@ window.renderDropdownFilters = function({ indices = [], sectors = [], onChange =
     .attr('value', d => d)
     .text(d => d);
   sectorSel.on('change', function() {
-    onChange({ sector: this.value });
+    debouncedOnChange({ sector: this.value });
   });
 };
 
@@ -177,6 +190,7 @@ if (typeof module !== 'undefined' && module.exports) {
     hideLoadingSpinner,
     showErrorMessage,
     hideErrorMessage,
-    renderDropdownFilters
+    renderDropdownFilters,
+    debounce
   };
 }

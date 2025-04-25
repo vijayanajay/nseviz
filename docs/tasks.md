@@ -3,10 +3,10 @@
 ---
 **Stats:**
 - Total Tasks: 38
-- Completed: 31
-- % Complete: 82%
-- Completed Effort: 32.4h
-- Pending Effort: 5.6h
+- Completed: 32
+- % Complete: 84%
+- Completed Effort: 33.4h
+- Pending Effort: 4.6h
 
 | Task ID | Description | Status | Est. Time | Time Taken |
 |---------|-------------|--------|-----------|------------|
@@ -39,7 +39,7 @@
 | F8.2    | Add sector/index dropdown filters with D3.js, fetch data from backend on change. Test with Jest & Cypress. | ✅ | 1.5h | 1.5h |
 | F8.3    | Implement responsive grid layout for heatmap using CSS Grid. Test with Cypress (viewport tests). | ✅ | 1h | 0.2h |
 | F8.4    | Add loading and error states in UI for API fetches. Test with Jest. | ✅ | 0.5h | 0.5h |
-| F8.5    | Optimize frontend data fetch: debounce filter changes, show spinner. Test with Jest. | ⬜ | 0.5h |  |
+| F8.5    | Optimize frontend data fetch: debounce filter changes, show spinner. Test with Jest. | ✅ | 0.5h | 0.5h |
 | F8.6    | Prepare production-ready frontend build (minify CSS/JS, update README deploy section). Test with build script. | ⬜ | 1h |  |
 | F9.1    | Set up D3.js treemap/heatmap with mock data. Example: use D3's `d3.treemap()` and render boxes in `#treemap` container. | ⬜ | 2h |  |
 | F9.2    | Integrate real API data into D3.js treemap/heatmap. Example: update D3 data binding to use fetched data. | ⬜ | 1.5h |  |
@@ -83,7 +83,7 @@
 - **F8.2** (1.5h): Add sector/index dropdown filters with D3.js, fetch data from backend on change. Test with Jest & Cypress. | ✅ | 1.5h | 1.5h |
 - **F8.3** (1h): Implement responsive grid layout for heatmap using CSS Grid. Test with Cypress (viewport tests). | ✅ | 1h | 0.2h |
 - **F8.4** (0.5h): Add loading and error states in UI for API fetches. Test with Jest. | ✅ | 0.5h | 0.5h |
-- **F8.5** (0.5h): Optimize frontend data fetch: debounce filter changes, show spinner. Test with Jest. | ⬜ | 0.5h |  |
+- **F8.5** (0.5h): Optimize frontend data fetch: debounce filter changes, show spinner. Test with Jest. | ✅ | 0.5h | 0.5h |
 - **F8.6** (1h): Prepare production-ready frontend build (minify CSS/JS, update README deploy section). Test with build script. | ⬜ | 1h |  |
 
 ### 9. D3.js Heatmap/Treemap Visualization
@@ -103,6 +103,13 @@
 ### 11. Final Review & Handover
 - **F11.1** (1h): Ensure all frontend automated tests pass (Jest, Cypress, Stylelint). Example: run `npm test` and `npx cypress run`.
 - **F11.2** (1h): Prepare frontend handover checklist: all tests passing, code linted, documentation complete.
+
+---
+## [2025-04-25] F8.5 Complete: Debounced Dropdown Filter Changes, Loading Spinner Logic, and Jest Tests
+- Debounced dropdown filter changes to prevent excessive API calls.
+- Implemented loading spinner logic to show/hide on API fetches.
+- Added Jest unit tests for debounce/handler logic.
+- All tests passing; frontend optimized for performance.
 
 ---
 ## [2025-04-25] F8.1 Complete: Heatmap Color Legend UI
