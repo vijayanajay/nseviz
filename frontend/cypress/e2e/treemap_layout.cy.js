@@ -27,3 +27,31 @@ describe('Treemap Grid Layout Responsiveness', () => {
       });
   });
 });
+
+// F8.3: Responsive grid layout test for #heatmap
+// Checks 12 columns on desktop, 1 column on mobile
+
+describe('Heatmap Grid Layout Responsiveness', () => {
+  beforeEach(() => {
+    cy.visit('/');
+  });
+
+  it('should have 12 grid columns on desktop', () => {
+    cy.viewport(1280, 800);
+    cy.get('#heatmap').should('have.css', 'display', 'grid');
+    cy.get('#heatmap')
+      .invoke('css', 'grid-template-columns')
+      .then((val) => {
+        expect(val.split(' ').length).to.eq(12);
+      });
+  });
+
+  it('should have 1 grid column on mobile', () => {
+    cy.viewport(375, 700);
+    cy.get('#heatmap')
+      .invoke('css', 'grid-template-columns')
+      .then((val) => {
+        expect(val.split(' ').length).to.eq(1);
+      });
+  });
+});
