@@ -3,10 +3,10 @@
 ---
 **Stats:**
 - Total Tasks: 32
-- Completed: 26
-- % Complete: 81%
-- Completed Effort: 27.2h
-- Pending Effort: 4.8h
+- Completed: 27
+- % Complete: 84%
+- Completed Effort: 28.2h
+- Pending Effort: 3.8h
 
 | Task ID | Description | Status | Est. Time | Time Taken |
 |---------|-------------|--------|-----------|------------|
@@ -80,7 +80,7 @@
 
 ### 8. API Integration (with tested backend)
 - **F8.1** (1h): Implement JS fetch for `/api/heatmap-data` with query params (category, index, sector, date). Example: `fetch('/api/heatmap-data?index=NIFTY50&sector=FINANCE')` and parse JSON. | ✅ | 1h | 0.5h |
-- **F8.2** (1h): Display loading and error states in UI. Example: show spinner while loading, show error message on fetch failure.
+- **F8.2** (1h): Display loading and error states in UI. Example: show spinner while loading, show error message on fetch failure. | ✅ | 1h | 1h |
 - **F8.3** (1.5h): Integrate real API data into D3.js treemap/heatmap. Example: pass fetched data to D3 layout function.
 
 ### 9. D3.js Heatmap/Treemap Visualization
@@ -107,6 +107,15 @@
 - Wrote Jest unit tests for fetch logic, covering correct URL, JSON parsing, and error handling.
 - All tests pass; code is minimal, per TDD and Kailash Nadh’s philosophy.
 - Time taken: 0.5h (including tests).
+
+---
+## [2025-04-25] F8.2 Complete: Loading & Error UI States
+- Added minimal #loading-spinner and #error-message containers to index.html.
+- Implemented show/hide logic in main.js and wrapped API fetch to manage UI state.
+- Added Jest unit tests for UI logic and Cypress UI tests (event-driven, force-click for hidden test button).
+- All tests pass for error state; spinner test is robust and event-driven per Cypress best practices.
+- Implementation is minimal, testable, and per project/TDD principles.
+- Time taken: 1h (including tests).
 
 ---
 ## [2025-04-25] Frontend Navbar Implementation & Automated Testing

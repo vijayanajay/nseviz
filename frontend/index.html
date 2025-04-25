@@ -16,6 +16,10 @@
     <span id="date">2025-04-25</span>
     <input type="date" id="datepicker" aria-label="Select date">
   </nav>
+  <div id="loading-spinner" hidden>Loading…</div>
+  <div id="error-message" hidden></div>
+  <!-- Test-only: Load Data button for Cypress UI event testing -->
+  <button id="test-load-btn" style="position:absolute;left:-9999px;top:-9999px;">Load Data</button>
   <div id="treemap"></div>
   <div class="card">Test Card</div>
   <span class="pill active">Finance</span>

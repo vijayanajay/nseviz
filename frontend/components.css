@@ -119,3 +119,24 @@
 .tab:not(.active):hover {
   background: #e0e7ef;
 }
+
+/* Minimal spinner style for #loading-spinner */
+#loading-spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem auto;
+  font-size: 1.2rem;
+  color: #007bff;
+}
+
+/* Minimal error message style */
+#error-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem auto;
+  color: #c00;
+  font-weight: bold;
+  font-size: 1rem;
+}

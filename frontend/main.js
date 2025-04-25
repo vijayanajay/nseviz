@@ -59,16 +59,67 @@ function fetchHeatmapData(params = {}) {
     });
 }
 
+// --- Loading & Error UI Logic (F8.2) ---
+function showLoadingSpinner() {
+  const el = document.getElementById('loading-spinner');
+  if (el) el.hidden = false;
+}
+function hideLoadingSpinner() {
+  const el = document.getElementById('loading-spinner');
+  if (el) el.hidden = true;
+}
+function showErrorMessage(msg) {
+  const el = document.getElementById('error-message');
+  if (el) {
+    el.textContent = msg;
+    el.hidden = false;
+  }
+}
+function hideErrorMessage() {
+  const el = document.getElementById('error-message');
+  if (el) {
+    el.textContent = '';
+    el.hidden = true;
+  }
+}
+
+// Minimal wrapper to fetch heatmap data and manage UI states
+window.loadHeatmapData = function(params = {}) {
+  hideErrorMessage();
+  showLoadingSpinner();
+  return fetchHeatmapData(params)
+    .then(data => {
+      hideLoadingSpinner();
+      // TODO: render data to treemap
+      return data;
+    })
+    .catch(err => {
+      hideLoadingSpinner();
+      showErrorMessage(err.message || 'Failed to load data');
+      throw err;
+    });
+};
+
 // Export for Jest tests (CommonJS compatibility)
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     setupDatePicker,
     getDatePickerValue,
-    fetchHeatmapData
+    fetchHeatmapData,
+    showLoadingSpinner,
+    hideLoadingSpinner,
+    showErrorMessage,
+    hideErrorMessage
   };
 }
 
-// Initialize on DOMContentLoaded
+// Attach test button event for Cypress-driven UI event
 if (typeof window !== 'undefined') {
-  window.addEventListener('DOMContentLoaded', setupDatePicker);
+  window.addEventListener('DOMContentLoaded', () => {
+    setupDatePicker();
+    const btn = document.getElementById('test-load-btn');
+    if (btn) {
+      btn.addEventListener('click', () => window.loadHeatmapData());
+    }
+  });
 }
