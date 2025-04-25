@@ -6,7 +6,7 @@
 - Completed: 33
 - % Complete: 86%
 - Completed Effort: 34.4h
-- Pending Effort: 3.6h
+- Pending Effort: 18h
 
 | Task ID | Description | Status | Est. Time | Time Taken |
 |---------|-------------|--------|-----------|------------|
