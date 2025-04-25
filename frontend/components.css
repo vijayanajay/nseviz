@@ -120,6 +120,50 @@
   background: #e0e7ef;
 }
 
+/* Heatmap Color Legend UI */
+.heatmap-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 10px;
+  margin: 18px 0 10px 0;
+  padding: 8px 12px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px 0 #0f14191a;
+  font-size: 0.97rem;
+}
+.legend-swatch {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  margin-right: 6px;
+  border: 1px solid #e0e0e0;
+  vertical-align: middle;
+}
+.legend-label {
+  margin-right: 18px;
+  font-size: 0.97rem;
+  color: #222;
+  vertical-align: middle;
+}
+@media (max-width: 600px) {
+  .heatmap-legend {
+    font-size: 0.85rem;
+    padding: 6px 4px;
+    gap: 8px 6px;
+  }
+  .legend-swatch {
+    width: 18px;
+    height: 18px;
+    margin-right: 4px;
+  }
+  .legend-label {
+    margin-right: 8px;
+  }
+}
+
 /* Minimal spinner style for #loading-spinner */
 #loading-spinner {
   display: flex;

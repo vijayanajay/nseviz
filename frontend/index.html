@@ -21,6 +21,15 @@
   <!-- Test-only: Load Data button for Cypress UI event testing -->
   <button id="test-load-btn" style="position:absolute;left:-9999px;top:-9999px;">Load Data</button>
   <div id="treemap"></div>
+  <!-- Heatmap Color Legend UI -->
+  <div data-testid="heatmap-legend" class="heatmap-legend">
+    <div class="legend-swatch" style="background:#E02424"></div><span class="legend-label">&lt; -3%</span>
+    <div class="legend-swatch" style="background:#EF4444"></div><span class="legend-label">-1% to -3%</span>
+    <div class="legend-swatch" style="background:#F87171"></div><span class="legend-label">0% to -1%</span>
+    <div class="legend-swatch" style="background:#34D399"></div><span class="legend-label">0% to +1%</span>
+    <div class="legend-swatch" style="background:#10B981"></div><span class="legend-label">+1% to +3%</span>
+    <div class="legend-swatch" style="background:#059669"></div><span class="legend-label">&gt; +3%</span>
+  </div>
   <div class="card">Test Card</div>
   <span class="pill active">Finance</span>
   <span class="pill inactive">IT</span>

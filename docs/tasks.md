@@ -2,11 +2,11 @@
 
 ---
 **Stats:**
-- Total Tasks: 32
-- Completed: 27
-- % Complete: 84%
-- Completed Effort: 28.2h
-- Pending Effort: 3.8h
+- Total Tasks: 38
+- Completed: 28
+- % Complete: 73%
+- Completed Effort: 28.7h
+- Pending Effort: 9.3h
 
 | Task ID | Description | Status | Est. Time | Time Taken |
 |---------|-------------|--------|-----------|------------|
@@ -27,33 +27,33 @@
 | B4.5    | Refactor code for clarity and maintainability: add docstrings, type hints, and inline comments. Example: `def get_heatmap_data(index: str, sector: str) -> dict:` | ✅ | 1.5h      | 1h         |
 | B5.1    | Document endpoint, query params, and response schema in `docs/api.md` with request/response examples. | ✅ | 1h        | 1h         |
 | B5.2    | Prepare backend handover checklist: all tests passing (pytest), code linted (flake8), and documentation complete. | ✅ | 1h        | 1h         |
-
-### 1. Project Setup & API Contract
-- **B1.1** (1h): Set up Python virtual environment and install Flask & yfinance. Example: `python -m venv venv && pip install Flask yfinance`. 
-- **B1.2** (1.5h): Initialize Flask project structure: create folders for `app/`, `app/routes.py`, `app/__init__.py`, `requirements.txt`, and `config.py`. 
-- **B1.3** (2h): Draft and document a single API contract: `/api/heatmap-data` with query params (`category`, `index`, `sector`, `date`). Document expected request format and sample response in `docs/api.md`. Example request: `/api/heatmap-data?index=NIFTY50&sector=FINANCE&date=2024-04-01`. 
-- **B1.4** (1h): Set up CORS in Flask using `flask-cors` to allow frontend JS access. Example: `from flask_cors import CORS; CORS(app)`. 
-
-### 2. Endpoint Stub & Mock Data
-- **B2.1** (1h): Implement `/api/heatmap-data` endpoint in `routes.py` that returns static/mock JSON data matching the documented schema. Example response: `{ "index": "NIFTY50", "sector": "FINANCE", "data": [{ "symbol": "HDFCBANK", "change": 1.2, "price": 1600.5 }] }`. 
-- **B2.2** (1h): Add error handling for the endpoint: return 400 for invalid params, 500 for server errors, with JSON error messages. Example: `{ "error": "Invalid sector" }`. 
-
-### 3. yfinance Integration
-- **B3.1** (1.5h): Use yfinance to fetch technical chart data for requested index/sector/stock. Example: `import yfinance as yf; yf.download('^NSEI', period='1d')`. 
-- **B3.2** (1.5h): Implement logic to filter/group yfinance data by category, index, sector as per query params. Example: filter stocks in the FINANCE sector from NIFTY50. 
-- **B3.3** (2h): Transform raw yfinance data to the frontend schema: include symbol, name, price, change %, volume, etc. Example output: `[ { "symbol": "HDFCBANK", "name": "HDFC Bank", "price": 1600.5, "change": 1.2 } ]`. 
-- **B3.4** (1.5h): Implement support for date-based data fetching (latest and historical). Example: `/api/heatmap-data?date=2024-04-01` returns data for that date. 
-
-### 4. Automated Testing & Validation
-- **B4.1** (1h): Write unit tests for `/api/heatmap-data` (mock data) using `pytest`. Example: test valid response, test invalid sector param. 
-- **B4.2** (1.5h): Write unit tests for `/api/heatmap-data` (yfinance data) using `pytest` and `unittest.mock` to mock yfinance calls.
-- **B4.3** (2h): Implement automated API contract tests using `pytest` and `requests` to ensure endpoint returns correct schema for all query param combinations.
-- **B4.4** (1h): Add logging for requests and errors using Python's `logging` module. Log every request and error with timestamp and params.
-- **B4.5** (1.5h): Refactor code for clarity and maintainability: add docstrings, type hints, and inline comments. Example: `def get_heatmap_data(index: str, sector: str) -> dict:`
-
-### 5. Documentation & Handover
-- **B5.1** (1h): Document endpoint, query params, and response schema in `docs/api.md` with request/response examples. | ✅ | 1h        | 1h         |
-- **B5.2** (1h): Prepare backend handover checklist: all tests passing (pytest), code linted (flake8), and documentation complete. | ✅ | 1h        | 1h         |
+| F6.1    | Create static `index.html` with containers for heatmap/treemap, controls, navbar, and footer (now in frontend/index.html) | ✅ | 1h        | 0.5h         |
+| F6.2    | Create `main.js` and link to HTML (now in frontend/main.js) | ✅ | 1h        | 0.1h         |
+| F6.3    | Add CSS files: `base.css`, `components.css`, `layouts.css`, `dark-mode.css` (now in frontend/) | ✅ | 1h        | 0.1h         |
+| F7.1    | Implement Navbar (logo, navigation, date display) in HTML and style in `components.css`. Example: `<nav><img src="logo.svg"> <span>Indian Stock Market Heatmap</span> <span id="date"></span></nav>` | ✅ | 1.5h | 1h |
+| F7.2    | Implement Index Selector as segmented control in HTML and JS. Example: `<button data-index="NIFTY50">Nifty 50</button>`; add event listeners in JS. | ✅ | 1.5h | 1h |
+| F7.3    | Implement Date Picker with calendar overlay and focus states using vanilla JS. Example: `<input type="date" id="datepicker">` and style overlay in CSS. | ✅ | 2h | 0.3h |
+| F7.4    | Implemented responsive CSS Grid for #treemap in layouts.css: 12 columns on desktop, 4 on tablet, 1 on mobile. Added Cypress test for layout responsiveness. | ✅ | 1.5h | 0.2h |
+| F7.5    | Implement Card, Pill/Tag, Tabs, Accordion, Ad Slot, Mobile Navigation, Snapshot Cards, Mobile Sheet Modal as per frontend-design.md, each as separate HTML/CSS components. | ✅ | 2.5h | 1.5h |
+| F8.1    | Implement heatmap color legend UI in index.html per frontend-design.md. Test with Cypress. | ✅ | 1h | 0.5h |
+| F8.2    | Add sector/index dropdown filters with D3.js, fetch data from backend on change. Test with Jest & Cypress. | ⬜ | 1.5h |  |
+| F8.3    | Implement responsive grid layout for heatmap using CSS Grid. Test with Cypress (viewport tests). | ⬜ | 1h |  |
+| F8.4    | Add loading and error states in UI for API fetches. Test with Jest. | ⬜ | 0.5h |  |
+| F8.5    | Optimize frontend data fetch: debounce filter changes, show spinner. Test with Jest. | ⬜ | 0.5h |  |
+| F8.6    | Prepare production-ready frontend build (minify CSS/JS, update README deploy section). Test with build script. | ⬜ | 1h |  |
+| F9.1    | Set up D3.js treemap/heatmap with mock data. Example: use D3's `d3.treemap()` and render boxes in `#treemap` container. | ⬜ | 2h |  |
+| F9.2    | Integrate real API data into D3.js treemap/heatmap. Example: update D3 data binding to use fetched data. | ⬜ | 1.5h |  |
+| F9.3    | Add color coding and sizing logic according to performance and market cap, as per palette in frontend-design.md. Example: set fill color based on `change` value. | ⬜ | 1.5h |  |
+| F9.4    | Add tooltips and interactivity (hover, click, modal sheet on mobile) using D3 event handlers. Example: `on('mouseover', ...)` to show tooltip div. | ⬜ | 2h |  |
+| F9.5    | Implement sector/category drilldown: clicking a sector filters the treemap. Example: update fetch call with new sector param and re-render. | ⬜ | 1.5h |  |
+| F10.1   | Write unit tests for JS data-fetching functions using Jest. Example: mock fetch and assert correct API call and data parsing. | ⬜ | 1h |  |
+| F10.2   | Write integration tests for D3.js rendering using Jest and jsdom. Example: assert correct number of SVG nodes rendered for input data. | ⬜ | 1.5h |  |
+| F10.3   | Write automated UI tests for index selector, date picker, and interactions using Cypress. Example: simulate user clicking index selector and verify treemap updates. | ⬜ | 2h |  |
+| F10.4   | Write CSS linting tests using Stylelint for all CSS files. Example: add stylelint config and run `stylelint *.css`. | ⬜ | 1h |  |
+| F10.5   | Add code comments and documentation to JS, HTML, and CSS files as per project standards. | ⬜ | 1.5h |  |
+| F11.1   | Ensure all frontend automated tests pass (Jest, Cypress, Stylelint). Example: run `npm test` and `npx cypress run`. | ⬜ | 1h |  |
+| F11.2   | Prepare frontend handover checklist: all tests passing, code linted, documentation complete. | ⬜ | 1h |  |
+| D1.1    | Prepare deployment scripts and documentation for backend and frontend. Test deployment on local server. | ⬜ | 1h |  |
 
 ---
 ## [2025-04-25] Backend Code Refactor for Clarity & Maintainability
@@ -79,9 +79,12 @@
 - **F7.5** (2.5h): Implement Card, Pill/Tag, Tabs, Accordion, Ad Slot, Mobile Navigation, Snapshot Cards, Mobile Sheet Modal as per frontend-design.md, each as separate HTML/CSS components. | ✅ | 2.5h | 1.5h |
 
 ### 8. API Integration (with tested backend)
-- **F8.1** (1h): Implement JS fetch for `/api/heatmap-data` with query params (category, index, sector, date). Example: `fetch('/api/heatmap-data?index=NIFTY50&sector=FINANCE')` and parse JSON. | ✅ | 1h | 0.5h |
-- **F8.2** (1h): Display loading and error states in UI. Example: show spinner while loading, show error message on fetch failure. | ✅ | 1h | 1h |
-- **F8.3** (1.5h): Integrate real API data into D3.js treemap/heatmap. Example: pass fetched data to D3 layout function.
+- **F8.1** (1h): Implement heatmap color legend UI in index.html per frontend-design.md. Test with Cypress. | ✅ | 1h | 0.5h |
+- **F8.2** (1.5h): Add sector/index dropdown filters with D3.js, fetch data from backend on change. Test with Jest & Cypress. | ⬜ | 1.5h |  |
+- **F8.3** (1h): Implement responsive grid layout for heatmap using CSS Grid. Test with Cypress (viewport tests). | ⬜ | 1h |  |
+- **F8.4** (0.5h): Add loading and error states in UI for API fetches. Test with Jest. | ⬜ | 0.5h |  |
+- **F8.5** (0.5h): Optimize frontend data fetch: debounce filter changes, show spinner. Test with Jest. | ⬜ | 0.5h |  |
+- **F8.6** (1h): Prepare production-ready frontend build (minify CSS/JS, update README deploy section). Test with build script. | ⬜ | 1h |  |
 
 ### 9. D3.js Heatmap/Treemap Visualization
 - **F9.1** (2h): Set up D3.js treemap/heatmap with mock data. Example: use D3's `d3.treemap()` and render boxes in `#treemap` container.
@@ -102,11 +105,11 @@
 - **F11.2** (1h): Prepare frontend handover checklist: all tests passing, code linted, documentation complete.
 
 ---
-## [2025-04-25] F8.1 Complete: API Fetch Logic
-- Implemented fetchHeatmapData in main.js to call /api/heatmap-data with category, index, sector, date query params.
-- Wrote Jest unit tests for fetch logic, covering correct URL, JSON parsing, and error handling.
-- All tests pass; code is minimal, per TDD and Kailash Nadh’s philosophy.
-- Time taken: 0.5h (including tests).
+## [2025-04-25] F8.1 Complete: Heatmap Color Legend UI
+- UI added to index.html after #treemap, styled in components.css per palette spec.
+- Minimal, responsive, and matches design doc.
+- Cypress E2E test (legend.cy.js) written and passing for presence, labels, and responsiveness.
+- Time taken: 0.5h
 
 ---
 ## [2025-04-25] F8.2 Complete: Loading & Error UI States
@@ -150,7 +153,6 @@
 ## Legend
 - **B**: Backend
 - **F**: Frontend
+- **D**: Deployment
 
 ---
-
-This WBS ensures a single backend endpoint, all backend work is completed and tested before frontend begins, and all frontend tasks align with your design doc. All tasks ≤2h for focused, parallelizable execution. No accessibility or manual testing tasks included. All testing is automated with specified tools.
