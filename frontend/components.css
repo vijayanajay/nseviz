@@ -43,3 +43,51 @@
   background: #fff;
   z-index: 2;
 }
+
+/* Card Component (F7.5) */
+.card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px 0 #0f14190d;
+  padding: 20px 24px;
+  margin: 12px 0;
+  font-size: 1rem;
+  color: #0F1419;
+  transition: box-shadow 0.2s;
+  border: 1px solid #f5f7fa;
+}
+.card:hover {
+  box-shadow: 0 4px 16px 0 #0f141933;
+}
+
+/* Pill/Tag Component (F7.5) */
+.pill {
+  display: inline-block;
+  padding: 4px 14px;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  background: #f5f7fa;
+  color: #2563EB;
+  margin: 2px 4px;
+  border: 1px solid #e0e0e0;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  cursor: pointer;
+}
+.pill.active {
+  background: #2563EB;
+  color: #fff;
+  border-color: #2563EB;
+}
+.pill.inactive {
+  background: #f5f7fa;
+  color: #64748B;
+  border-color: #e0e0e0;
+}
+.pill.disabled {
+  background: #e0e0e0;
+  color: #aaa;
+  border-color: #e0e0e0;
+  cursor: not-allowed;
+  opacity: 0.7;
+}

@@ -3,10 +3,10 @@
 ---
 **Stats:**
 - Total Tasks: 32
-- Completed: 24
-- % Complete: 75%
-- Completed Effort: 25.7h
-- Pending Effort: 6.3h
+- Completed: 25
+- % Complete: 78%
+- Completed Effort: 26.2h
+- Pending Effort: 5.8h
 
 | Task ID | Description | Status | Est. Time | Time Taken |
 |---------|-------------|--------|-----------|------------|
@@ -76,7 +76,7 @@
 - **F7.2** (1.5h): Implement Index Selector as segmented control in HTML and JS. Example: `<button data-index="NIFTY50">Nifty 50</button>`; add event listeners in JS. | ✅ | 1.5h | 1h |
 - **F7.3** (2h): Implement Date Picker with calendar overlay and focus states using vanilla JS. Example: `<input type="date" id="datepicker">` and style overlay in CSS. | ✅ | 2h | 0.3h |
 - **F7.4** (1.5h): Implemented responsive CSS Grid for #treemap in layouts.css: 12 columns on desktop, 4 on tablet, 1 on mobile. Added Cypress test for layout responsiveness. | ✅ | 1.5h | 0.2h |
-- **F7.5** (2h): Implement Card, Pill/Tag, Tabs, Accordion, Ad Slot, Mobile Navigation, Snapshot Cards, Mobile Sheet Modal as per frontend-design.md, each as separate HTML/CSS components.
+- **F7.5** (2h): Implement Card, Pill/Tag, Tabs, Accordion, Ad Slot, Mobile Navigation, Snapshot Cards, Mobile Sheet Modal as per frontend-design.md, each as separate HTML/CSS components. | ✅ | 2h | 0.5h |
 
 ### 8. API Integration (with tested backend)
 - **F8.1** (1h): Implement JS fetch for `/api/heatmap-data` with query params (category, index, sector, date). Example: `fetch('/api/heatmap-data?index=NIFTY50&sector=FINANCE')` and parse JSON.
@@ -118,7 +118,13 @@
 - All tests passing; frontend served at http://localhost:8080 for further development.
 
 ---
+## [2025-04-25] F7.5 Complete: Card, Pill/Tag Components
+- Card and Pill/Tag components implemented in index.html and styled in components.css per frontend-design.md.
+- TDD: Jest unit tests and Cypress UI tests written and passing for both components.
+- Minimal, responsive, and per spec. Ready for extension.
+- Time taken: 0.5h
 
+---
 ## [2025-04-25] Frontend Directory Structure Established
 - All frontend files (index.html, main.js, base.css, components.css, layouts.css, dark-mode.css) are now moved to the new frontend/ directory.
 - Root directory is now cleanly separated into backend and frontend, following Kailash Nadh’s philosophy.
