@@ -76,7 +76,7 @@
 - **F7.2** (1.5h): Implement Index Selector as segmented control in HTML and JS. Example: `<button data-index="NIFTY50">Nifty 50</button>`; add event listeners in JS. | ✅ | 1.5h | 1h |
 - **F7.3** (2h): Implement Date Picker with calendar overlay and focus states using vanilla JS. Example: `<input type="date" id="datepicker">` and style overlay in CSS. | ✅ | 2h | 0.3h |
 - **F7.4** (1.5h): Implemented responsive CSS Grid for #treemap in layouts.css: 12 columns on desktop, 4 on tablet, 1 on mobile. Added Cypress test for layout responsiveness. | ✅ | 1.5h | 0.2h |
-- **F7.5** (2h): Implement Card, Pill/Tag, Tabs, Accordion, Ad Slot, Mobile Navigation, Snapshot Cards, Mobile Sheet Modal as per frontend-design.md, each as separate HTML/CSS components. | ✅ | 2h | 0.5h |
+- **F7.5** (2.5h): Implement Card, Pill/Tag, Tabs, Accordion, Ad Slot, Mobile Navigation, Snapshot Cards, Mobile Sheet Modal as per frontend-design.md, each as separate HTML/CSS components. | ✅ | 2.5h | 1.5h |
 
 ### 8. API Integration (with tested backend)
 - **F8.1** (1h): Implement JS fetch for `/api/heatmap-data` with query params (category, index, sector, date). Example: `fetch('/api/heatmap-data?index=NIFTY50&sector=FINANCE')` and parse JSON.
@@ -118,9 +118,16 @@
 - All tests passing; frontend served at http://localhost:8080 for further development.
 
 ---
-## [2025-04-25] F7.5 Complete: Card, Pill/Tag Components
+## [2025-04-25] F7.5 Progress: Card, Pill/Tag Components
 - Card and Pill/Tag components implemented in index.html and styled in components.css per frontend-design.md.
 - TDD: Jest unit tests and Cypress UI tests written and passing for both components.
+- Minimal, responsive, and per spec. Ready for extension.
+- Time taken: 0.5h
+
+---
+## [2025-04-25] F7.5 Progress: Tabs Component
+- Tabs component implemented in index.html and styled in components.css per frontend-design.md.
+- TDD: Jest unit test and Cypress UI test written and passing for Tabs.
 - Minimal, responsive, and per spec. Ready for extension.
 - Time taken: 0.5h
 
