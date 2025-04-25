@@ -3,10 +3,10 @@
 ---
 **Stats:**
 - Total Tasks: 38
-- Completed: 32
-- % Complete: 84%
-- Completed Effort: 33.4h
-- Pending Effort: 4.6h
+- Completed: 33
+- % Complete: 86%
+- Completed Effort: 34.4h
+- Pending Effort: 3.6h
 
 | Task ID | Description | Status | Est. Time | Time Taken |
 |---------|-------------|--------|-----------|------------|
@@ -40,7 +40,7 @@
 | F8.3    | Implement responsive grid layout for heatmap using CSS Grid. Test with Cypress (viewport tests). | ✅ | 1h | 0.2h |
 | F8.4    | Add loading and error states in UI for API fetches. Test with Jest. | ✅ | 0.5h | 0.5h |
 | F8.5    | Optimize frontend data fetch: debounce filter changes, show spinner. Test with Jest. | ✅ | 0.5h | 0.5h |
-| F8.6    | Prepare production-ready frontend build (minify CSS/JS, update README deploy section). Test with build script. | ⬜ | 1h |  |
+| F8.6    | Prepare production-ready frontend build (minify CSS/JS, update README deploy section). Test with build script. | ✅ | 1h | 1h |
 | F9.1    | Set up D3.js treemap/heatmap with mock data. Example: use D3's `d3.treemap()` and render boxes in `#treemap` container. | ⬜ | 2h |  |
 | F9.2    | Integrate real API data into D3.js treemap/heatmap. Example: update D3 data binding to use fetched data. | ⬜ | 1.5h |  |
 | F9.3    | Add color coding and sizing logic according to performance and market cap, as per palette in frontend-design.md. Example: set fill color based on `change` value. | ⬜ | 1.5h |  |
@@ -84,7 +84,8 @@
 - **F8.3** (1h): Implement responsive grid layout for heatmap using CSS Grid. Test with Cypress (viewport tests). | ✅ | 1h | 0.2h |
 - **F8.4** (0.5h): Add loading and error states in UI for API fetches. Test with Jest. | ✅ | 0.5h | 0.5h |
 - **F8.5** (0.5h): Optimize frontend data fetch: debounce filter changes, show spinner. Test with Jest. | ✅ | 0.5h | 0.5h |
-- **F8.6** (1h): Prepare production-ready frontend build (minify CSS/JS, update README deploy section). Test with build script. | ⬜ | 1h |  |
+- **F8.6** (1h): Prepare production-ready frontend build (minify CSS/JS, update README deploy section). Test with build script. | ✅ | 1h | 1h |
+- **F8.6 Complete:** Production-ready frontend build created, README updated, and build script tested.
 
 ### 9. D3.js Heatmap/Treemap Visualization
 - **F9.1** (2h): Set up D3.js treemap/heatmap with mock data. Example: use D3's `d3.treemap()` and render boxes in `#treemap` container.

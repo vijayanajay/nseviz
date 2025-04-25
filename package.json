@@ -4,6 +4,19 @@
     "d3": "^7.9.0",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
-    "serve": "^14.2.4"
+    "serve": "^14.2.4",
+    "terser": "^5.30.3",
+    "clean-css-cli": "^5.6.3",
+    "stylelint": "^16.4.2"
+  },
+  "scripts": {
+    "build:js": "terser frontend/main.js -o frontend/dist/main.min.js --compress --mangle",
+    "build:css": "cleancss -o frontend/dist/base.min.css frontend/base.css && cleancss -o frontend/dist/components.min.css frontend/components.css && cleancss -o frontend/dist/layouts.min.css frontend/layouts.css && cleancss -o frontend/dist/dark-mode.min.css frontend/dark-mode.css",
+    "build:copy": "if not exist frontend\\dist mkdir frontend\\dist && copy frontend\\index.html frontend\\dist\\index.html && copy frontend\\logo.svg frontend\\dist\\logo.svg",
+    "build": "npm run build:copy && npm run build:js && npm run build:css",
+    "test:jest": "jest",
+    "test:cypress": "cypress run",
+    "test:stylelint": "stylelint \"frontend/*.css\"",
+    "test:all": "npm run test:jest && npm run test:cypress && npm run test:stylelint"
   }
 }

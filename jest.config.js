@@ -2,6 +2,11 @@
 const config = {
   verbose: true,
   testEnvironment: 'jsdom',
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    '/frontend/cypress/',
+    '\\*.cy.js$'
+  ],
 };
 
 module.exports = config;
