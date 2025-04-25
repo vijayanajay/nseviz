@@ -100,6 +100,73 @@ window.loadHeatmapData = function(params = {}) {
     });
 };
 
+// --- Dropdown Filters (F8.2) ---
+// Minimal implementation for TDD: renders <select> for index and sector using D3.js
+window.renderDropdownFilters = function({ indices = [], sectors = [], onChange = () => {} }) {
+  // Index dropdown
+  const indexSel = d3.select('#index-dropdown');
+  indexSel.selectAll('option').remove();
+  indexSel.selectAll('option')
+    .data(indices)
+    .join('option')
+    .attr('value', d => d)
+    .text(d => d);
+  indexSel.on('change', function() {
+    onChange({ index: this.value });
+  });
+
+  // Sector dropdown
+  const sectorSel = d3.select('#sector-dropdown');
+  sectorSel.selectAll('option').remove();
+  sectorSel.selectAll('option')
+    .data(sectors)
+    .join('option')
+    .attr('value', d => d)
+    .text(d => d);
+  sectorSel.on('change', function() {
+    onChange({ sector: this.value });
+  });
+};
+
+window.defaultIndices = ['NIFTY50', 'NIFTYBANK'];
+window.defaultSectors = ['FINANCE', 'IT'];
+
+function updateHeatmap(data) {
+  const container = document.getElementById('heatmap');
+  if (!container) return;
+  container.innerHTML = '';
+  if (!Array.isArray(data)) return;
+  data.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'heatmap-cell';
+    div.textContent = item.symbol + ': ' + item.name;
+    container.appendChild(div);
+  });
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  setupDatePicker();
+  // Render dropdowns
+  window.renderDropdownFilters({
+    indices: window.defaultIndices,
+    sectors: window.defaultSectors,
+    onChange: params => {
+      // Get current selections
+      const index = document.getElementById('index-dropdown').value;
+      const sector = document.getElementById('sector-dropdown').value;
+      window.loadHeatmapData({ index, sector }).then(updateHeatmap);
+    }
+  });
+  // Initial load
+  const index = window.defaultIndices[0];
+  const sector = window.defaultSectors[0];
+  window.loadHeatmapData({ index, sector }).then(updateHeatmap);
+  const btn = document.getElementById('test-load-btn');
+  if (btn) {
+    btn.addEventListener('click', () => window.loadHeatmapData());
+  }
+});
+
 // Export for Jest tests (CommonJS compatibility)
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
@@ -109,17 +176,7 @@ if (typeof module !== 'undefined' && module.exports) {
     showLoadingSpinner,
     hideLoadingSpinner,
     showErrorMessage,
-    hideErrorMessage
+    hideErrorMessage,
+    renderDropdownFilters
   };
-}
-
-// Attach test button event for Cypress-driven UI event
-if (typeof window !== 'undefined') {
-  window.addEventListener('DOMContentLoaded', () => {
-    setupDatePicker();
-    const btn = document.getElementById('test-load-btn');
-    if (btn) {
-      btn.addEventListener('click', () => window.loadHeatmapData());
-    }
-  });
 }

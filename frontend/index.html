@@ -20,6 +20,13 @@
   <div id="error-message" hidden></div>
   <!-- Test-only: Load Data button for Cypress UI event testing -->
   <button id="test-load-btn" style="position:absolute;left:-9999px;top:-9999px;">Load Data</button>
+  <div style="display:flex;gap:1rem;margin:1rem 0;">
+    <label for="index-dropdown">Index:</label>
+    <select id="index-dropdown"></select>
+    <label for="sector-dropdown">Sector:</label>
+    <select id="sector-dropdown"></select>
+  </div>
+  <div id="heatmap"></div>
   <div id="treemap"></div>
   <!-- Heatmap Color Legend UI -->
   <div data-testid="heatmap-legend" class="heatmap-legend">
@@ -40,6 +47,7 @@
   </div>
   <div id="index-selector"></div>
   <footer id="footer"></footer>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
   <script src="main.js"></script>
 </body>
 </html>

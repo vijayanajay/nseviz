@@ -3,10 +3,10 @@
 ---
 **Stats:**
 - Total Tasks: 38
-- Completed: 28
-- % Complete: 73%
-- Completed Effort: 28.7h
-- Pending Effort: 9.3h
+- Completed: 29
+- % Complete: 76%
+- Completed Effort: 30.2h
+- Pending Effort: 7.8h
 
 | Task ID | Description | Status | Est. Time | Time Taken |
 |---------|-------------|--------|-----------|------------|
@@ -36,7 +36,7 @@
 | F7.4    | Implemented responsive CSS Grid for #treemap in layouts.css: 12 columns on desktop, 4 on tablet, 1 on mobile. Added Cypress test for layout responsiveness. | ✅ | 1.5h | 0.2h |
 | F7.5    | Implement Card, Pill/Tag, Tabs, Accordion, Ad Slot, Mobile Navigation, Snapshot Cards, Mobile Sheet Modal as per frontend-design.md, each as separate HTML/CSS components. | ✅ | 2.5h | 1.5h |
 | F8.1    | Implement heatmap color legend UI in index.html per frontend-design.md. Test with Cypress. | ✅ | 1h | 0.5h |
-| F8.2    | Add sector/index dropdown filters with D3.js, fetch data from backend on change. Test with Jest & Cypress. | ⬜ | 1.5h |  |
+| F8.2    | Add sector/index dropdown filters with D3.js, fetch data from backend on change. Test with Jest & Cypress. | ✅ | 1.5h | 1.5h |
 | F8.3    | Implement responsive grid layout for heatmap using CSS Grid. Test with Cypress (viewport tests). | ⬜ | 1h |  |
 | F8.4    | Add loading and error states in UI for API fetches. Test with Jest. | ⬜ | 0.5h |  |
 | F8.5    | Optimize frontend data fetch: debounce filter changes, show spinner. Test with Jest. | ⬜ | 0.5h |  |
@@ -80,7 +80,7 @@
 
 ### 8. API Integration (with tested backend)
 - **F8.1** (1h): Implement heatmap color legend UI in index.html per frontend-design.md. Test with Cypress. | ✅ | 1h | 0.5h |
-- **F8.2** (1.5h): Add sector/index dropdown filters with D3.js, fetch data from backend on change. Test with Jest & Cypress. | ⬜ | 1.5h |  |
+- **F8.2** (1.5h): Add sector/index dropdown filters with D3.js, fetch data from backend on change. Test with Jest & Cypress. | ✅ | 1.5h | 1.5h |
 - **F8.3** (1h): Implement responsive grid layout for heatmap using CSS Grid. Test with Cypress (viewport tests). | ⬜ | 1h |  |
 - **F8.4** (0.5h): Add loading and error states in UI for API fetches. Test with Jest. | ⬜ | 0.5h |  |
 - **F8.5** (0.5h): Optimize frontend data fetch: debounce filter changes, show spinner. Test with Jest. | ⬜ | 0.5h |  |
