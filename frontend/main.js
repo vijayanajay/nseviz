@@ -112,8 +112,8 @@ function debounce(fn, delay) {
 // --- Dropdown Filters (F8.2 + F8.5 debounce) ---
 // Minimal implementation for TDD: renders <select> for index and sector using D3.js
 window.renderDropdownFilters = function({ indices = [], sectors = [], onChange = () => {} }) {
-  // Import d3 locally for Jest mocking
-  const d3 = require('d3');
+  // Use window.d3 (from CDN) in browser
+  const d3 = window.d3;
   // Index dropdown
   const indexSel = d3.select('#index-dropdown');
   indexSel.selectAll('option').remove();
@@ -157,6 +157,54 @@ function updateHeatmap(data) {
   });
 }
 
+/**
+ * Render a D3 treemap in #treemap with the given data.
+ * @param {Array<{ name: string, value: number }>} data - Array of objects with name and value.
+ * Example: [{ name: 'A', value: 100 }, ...]
+ */
+window.renderTreemap = function(data) {
+  const container = document.getElementById('treemap');
+  if (!container) return;
+  container.innerHTML = '';
+  if (!Array.isArray(data) || data.length === 0) return;
+  // Support d3 in both browser and Jest (Node)
+  let d3local;
+  if (typeof d3 !== 'undefined') {
+    d3local = d3;
+  } else {
+    try {
+      d3local = require('d3');
+    } catch (e) {
+      throw new Error('d3 not found');
+    }
+  }
+  const width = container.clientWidth || 600;
+  const height = 400;
+  const svg = d3local.select(container)
+    .append('svg')
+    .attr('width', width)
+    .attr('height', height);
+  const root = d3local.hierarchy({ children: data })
+    .sum(d => d.value);
+  d3local.treemap()
+    .size([width, height])
+    .padding(2)(root);
+  const nodes = svg.selectAll('g')
+    .data(root.leaves())
+    .enter().append('g')
+    .attr('transform', d => `translate(${d.x0},${d.y0})`);
+  nodes.append('rect')
+    .attr('width', d => d.x1 - d.x0)
+    .attr('height', d => d.y1 - d.y0)
+    .attr('fill', '#34D399');
+  nodes.append('text')
+    .attr('x', 4)
+    .attr('y', 18)
+    .text(d => d.data.name)
+    .attr('fill', '#222')
+    .attr('font-size', '16px');
+};
+
 window.addEventListener('DOMContentLoaded', () => {
   setupDatePicker();
   // Render dropdowns
@@ -191,6 +239,7 @@ if (typeof module !== 'undefined' && module.exports) {
     showErrorMessage,
     hideErrorMessage,
     renderDropdownFilters,
-    debounce
+    debounce,
+    renderTreemap
   };
 }
