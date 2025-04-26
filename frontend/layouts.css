@@ -1,13 +1,14 @@
 /* Layouts CSS (grid, responsive, etc.) - to be implemented */
 
 /* Date Picker Responsive Styles (F7.3) */
-@media (max-width: 600px) {
+@media (width <= 600px) {
   #datepicker {
     width: 100%;
     margin-left: 0;
     margin-top: 12px;
     display: block;
   }
+
   #navbar {
     flex-wrap: wrap;
     gap: 8px;
@@ -25,13 +26,13 @@
   padding: 16px 0;
 }
 
-@media (max-width: 900px) {
+@media (width <= 900px) {
   #treemap {
     grid-template-columns: repeat(4, 1fr); /* 4 columns for tablets */
   }
 }
 
-@media (max-width: 600px) {
+@media (width <= 600px) {
   #treemap {
     grid-template-columns: 1fr; /* 1 column for mobile */
     gap: 8px;
@@ -50,13 +51,13 @@
   padding: 16px 0;
 }
 
-@media (max-width: 900px) {
+@media (width <= 900px) {
   #heatmap {
     grid-template-columns: repeat(4, 1fr); /* 4 columns for tablets */
   }
 }
 
-@media (max-width: 600px) {
+@media (width <= 600px) {
   #heatmap {
     grid-template-columns: 1fr; /* 1 column for mobile */
     gap: 8px;
