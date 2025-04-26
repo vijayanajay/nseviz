@@ -205,26 +205,52 @@ window.renderTreemap = function(data) {
     .attr('font-size', '16px');
 };
 
+// --- Integration: API data to D3 Treemap (F9.2) ---
+/**
+ * Takes API data array and maps to D3 treemap format [{ name, value }]
+ * @param {Array} apiData - Array of stock objects from API
+ * @returns {Array<{ name: string, value: number }>}
+ */
+function mapApiDataToTreemap(apiData) {
+  if (!Array.isArray(apiData)) return [];
+  return apiData.map(item => ({
+    name: item.symbol || item.name || '',
+    value: typeof item.change === 'number' ? Math.abs(item.change) : 1 // fallback for demo
+  }));
+}
+
+// Update DOMContentLoaded handler to render treemap with real API data
 window.addEventListener('DOMContentLoaded', () => {
   setupDatePicker();
-  // Render dropdowns
   window.renderDropdownFilters({
     indices: window.defaultIndices,
     sectors: window.defaultSectors,
     onChange: params => {
-      // Get current selections
       const index = document.getElementById('index-dropdown').value;
       const sector = document.getElementById('sector-dropdown').value;
-      window.loadHeatmapData({ index, sector }).then(updateHeatmap);
+      window.loadHeatmapData({ index, sector })
+        .then(data => {
+          // If API returns { data: [...] }, unwrap
+          const arr = Array.isArray(data) ? data : data.data;
+          window.renderTreemap(mapApiDataToTreemap(arr));
+        });
     }
   });
   // Initial load
   const index = window.defaultIndices[0];
   const sector = window.defaultSectors[0];
-  window.loadHeatmapData({ index, sector }).then(updateHeatmap);
+  window.loadHeatmapData({ index, sector })
+    .then(data => {
+      const arr = Array.isArray(data) ? data : data.data;
+      window.renderTreemap(mapApiDataToTreemap(arr));
+    });
   const btn = document.getElementById('test-load-btn');
   if (btn) {
-    btn.addEventListener('click', () => window.loadHeatmapData());
+    btn.addEventListener('click', () => window.loadHeatmapData()
+      .then(data => {
+        const arr = Array.isArray(data) ? data : data.data;
+        window.renderTreemap(mapApiDataToTreemap(arr));
+      }));
   }
 });
 
@@ -240,6 +266,7 @@ if (typeof module !== 'undefined' && module.exports) {
     hideErrorMessage,
     renderDropdownFilters,
     debounce,
-    renderTreemap
+    renderTreemap,
+    mapApiDataToTreemap // export for test
   };
 }

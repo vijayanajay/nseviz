@@ -3,10 +3,10 @@
 ---
 **Stats:**
 - Total Tasks: 38
-- Completed: 35
-- % Complete: 92%
-- Completed Effort: 37.4h
-- Pending Effort: 15h
+- Completed: 36
+- % Complete: 95%
+- Completed Effort: 38.9h
+- Pending Effort: 13h
 
 | Task ID | Description | Status | Est. Time | Time Taken |
 |---------|-------------|--------|-----------|------------|
@@ -42,7 +42,8 @@
 | F8.5    | Optimize frontend data fetch: debounce filter changes, show spinner. Test with Jest. | ✅ | 0.5h | 0.5h |
 | F8.6    | Prepare production-ready frontend build (minify CSS/JS, update README deploy section). Test with build script. | ✅ | 1h | 1h |
 | F9.1    | Set up D3.js treemap/heatmap with mock data. Example: use D3's `d3.treemap()` and render boxes in `#treemap` container. | ✅ | 2h        | 2h         |
-| F9.2    | Integrate real API data into D3.js treemap/heatmap. Example: update D3 data binding to use fetched data. | ⬜ | 1.5h |  |
+| F9.2    | Integrate real API data into D3.js treemap/heatmap. Example: update D3 data binding to use fetched data. | ✅ | 1.5h | 0.5h |
+<!-- Completed: Real API data is now mapped and rendered in D3 treemap. Jest-tested integration. Minimal, per spec. -->
 | F9.3    | Add color coding and sizing logic according to performance and market cap, as per palette in frontend-design.md. Example: set fill color based on `change` value. | ⬜ | 1.5h |  |
 | F9.4    | Add tooltips and interactivity (hover, click, modal sheet on mobile) using D3 event handlers. Example: `on('mouseover', ...)` to show tooltip div. | ⬜ | 2h |  |
 | F9.5    | Implement sector/category drilldown: clicking a sector filters the treemap. Example: update fetch call with new sector param and re-render. | ⬜ | 1.5h |  |
@@ -89,7 +90,8 @@
 
 ### 9. D3.js Heatmap/Treemap Visualization
 - **F9.1** (2h): Set up D3.js treemap/heatmap with mock data. Example: use D3's `d3.treemap()` and render boxes in `#treemap` container. | ✅ | 2h        | 2h         |
-- **F9.2** (1.5h): Integrate real API data into D3.js treemap/heatmap. Example: update D3 data binding to use fetched data.
+- **F9.2** (1.5h): Integrate real API data into D3.js treemap/heatmap. Example: update D3 data binding to use fetched data. | ✅ | 1.5h | 0.5h |
+<!-- Completed: Real API data is now mapped and rendered in D3 treemap. Jest-tested integration. Minimal, per spec. -->
 - **F9.3** (1.5h): Add color coding and sizing logic according to performance and market cap, as per palette in frontend-design.md. Example: set fill color based on `change` value.
 - **F9.4** (2h): Add tooltips and interactivity (hover, click, modal sheet on mobile) using D3 event handlers. Example: `on('mouseover', ...)` to show tooltip div.
 - **F9.5** (1.5h): Implement sector/category drilldown: clicking a sector filters the treemap. Example: update fetch call with new sector param and re-render.
