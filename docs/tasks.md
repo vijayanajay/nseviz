@@ -2,10 +2,10 @@
 
 ---
 **Stats:**
-- Total Tasks: 40
-- Completed: 39
+- Total Tasks: 41
+- Completed: 40
 - % Complete: 98%
-- Completed Effort: 42.4h
+- Completed Effort: 43.9h
 - Pending Effort: 10.5h
 
 | Task ID | Description | Status | Est. Time | Time Taken |
@@ -56,6 +56,7 @@
 | F11.1   | Ensure all frontend automated tests pass (Jest, Cypress, Stylelint). Example: run `npm test` and `npx cypress run`. | ⬜ | 1h |  |
 | F11.2   | Prepare frontend handover checklist: all tests passing, code linted, documentation complete. | ⬜ | 1h |  |
 | D1.1    | Prepare deployment scripts and documentation for backend and frontend. Test deployment on local server. | ⬜ | 1h |  |
+| D2.1    | Inventory all files in the codebase, document the purpose of each in docs/files_info.md, and flag unclear/unnecessary files. | ✅ | 1h | 0.5h |
 
 ---
 ## [2025-04-25] Backend Code Refactor for Clarity & Maintainability
@@ -188,3 +189,8 @@
 - Updated renderTreemap and mapApiDataToTreemap to use new logic.
 - Updated and added Jest tests to cover new logic; all tests pass.
 - Time taken: 1.5h
+
+## [2025-04-27] File Inventory & Documentation
+- Completed a comprehensive inventory of all files and directories in the codebase.
+- Created docs/files_info.md describing the purpose of every file and directory, and flagged any that are unclear or potentially unnecessary.
+- This improves maintainability and clarity for all contributors.
