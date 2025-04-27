@@ -1,31 +1,39 @@
-// Jest test for API-to-treemap integration (F9.2)
-const { mapApiDataToTreemap } = require('../main.js');
+// Jest test for API-to-treemap integration (F9.2+F9.3)
+const { mapApiDataToTreemap, getSizeForMarketCap } = require('../main.js');
 
 describe('mapApiDataToTreemap', () => {
-  it('maps API data to D3 treemap format', () => {
+  it('maps API data to D3 treemap format with log-scaled market cap', () => {
     const apiData = [
-      { symbol: 'HDFCBANK', name: 'HDFC Bank', change: 1.2 },
-      { symbol: 'INFY', name: 'Infosys', change: -0.5 },
-      { symbol: 'TCS', name: 'TCS', change: 0 }
+      { symbol: 'HDFCBANK', name: 'HDFC Bank', market_cap: 10000000000, change: 1.2 },
+      { symbol: 'INFY', name: 'Infosys', market_cap: 5000000000, change: -0.5 },
+      { symbol: 'TCS', name: 'TCS', market_cap: 0, change: 0 }, // should be filtered out
+      { symbol: 'XYZ', name: 'XYZ Ltd', change: 1.0 } // missing market_cap, should be filtered out
     ];
     const result = mapApiDataToTreemap(apiData);
     expect(result).toEqual([
-      { name: 'HDFCBANK', value: 1.2 },
-      { name: 'INFY', value: 0.5 },
-      { name: 'TCS', value: 0 }
+      {
+        name: 'HDFC Bank',
+        symbol: 'HDFCBANK',
+        value: getSizeForMarketCap(10000000000),
+        change: 1.2
+      },
+      {
+        name: 'Infosys',
+        symbol: 'INFY',
+        value: getSizeForMarketCap(5000000000),
+        change: -0.5
+      }
     ]);
   });
 
-  it('handles missing change field', () => {
+  it('returns empty array if no valid market cap', () => {
     const apiData = [
       { symbol: 'FOO' },
-      { name: 'Bar' }
+      { name: 'Bar' },
+      { symbol: 'ZERO', market_cap: 0 }
     ];
     const result = mapApiDataToTreemap(apiData);
-    expect(result).toEqual([
-      { name: 'FOO', value: 1 },
-      { name: 'Bar', value: 1 }
-    ]);
+    expect(result).toEqual([]);
   });
 
   it('returns empty array if input is not array', () => {

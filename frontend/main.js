@@ -157,10 +157,31 @@ function updateHeatmap(data) {
   });
 }
 
+// --- Color coding for price change % (F9.3) ---
+// Returns hex color string per frontend-design.md palette
+function getColorForChange(change) {
+  if (typeof change !== 'number' || isNaN(change)) return '#F5F7FA'; // fallback neutral
+  if (change < -3) return '#E02424'; // Deep Red
+  if (change >= -3 && change < -1) return '#EF4444'; // Mid Red
+  if (change >= -1 && change < 0) return '#F87171'; // Light Red
+  if (change >= 0 && change < 1) return '#34D399'; // Light Green
+  if (change >= 1 && change < 3) return '#10B981'; // Mid Green
+  if (change >= 3) return '#059669'; // Deep Green
+  return '#F5F7FA';
+}
+
+// --- Sizing logic for market cap (F9.3) ---
+// Returns a value suitable for D3 treemap sizing
+function getSizeForMarketCap(marketCap) {
+  if (typeof marketCap !== 'number' || marketCap <= 0) return 0;
+  // Use log scale for better visual spread
+  return Math.log10(marketCap);
+}
+
 /**
  * Render a D3 treemap in #treemap with the given data.
- * @param {Array<{ name: string, value: number }>} data - Array of objects with name and value.
- * Example: [{ name: 'A', value: 100 }, ...]
+ * @param {Array<{ name: string, value: number, change: number, symbol: string }>} data - Array of objects with name, value, change, and symbol.
+ * Example: [{ name: 'A', value: 100, change: 0.5, symbol: 'A' }, ...]
  */
 window.renderTreemap = function(data) {
   const container = document.getElementById('treemap');
@@ -196,27 +217,30 @@ window.renderTreemap = function(data) {
   nodes.append('rect')
     .attr('width', d => d.x1 - d.x0)
     .attr('height', d => d.y1 - d.y0)
-    .attr('fill', '#34D399');
+    .attr('fill', d => getColorForChange(d.data.change)) // Use color logic
+    .attr('data-symbol', d => d.data.symbol || d.data.name);
   nodes.append('text')
     .attr('x', 4)
-    .attr('y', 18)
-    .text(d => d.data.name)
-    .attr('fill', '#222')
+    .attr('y', 20)
+    .text(d => d.data.symbol || d.data.name)
+    .attr('fill', '#0F1419')
     .attr('font-size', '16px');
 };
 
 // --- Integration: API data to D3 Treemap (F9.2) ---
 /**
- * Takes API data array and maps to D3 treemap format [{ name, value }]
+ * Takes API data array and maps to D3 treemap format [{ name, value, change, symbol }]
  * @param {Array} apiData - Array of stock objects from API
- * @returns {Array<{ name: string, value: number }>}
+ * @returns {Array<{ name: string, value: number, change: number, symbol: string }>}
  */
 function mapApiDataToTreemap(apiData) {
   if (!Array.isArray(apiData)) return [];
   return apiData.map(item => ({
-    name: item.symbol || item.name || '',
-    value: typeof item.change === 'number' ? Math.abs(item.change) : 1 // fallback for demo
-  }));
+    name: item.name,
+    symbol: item.symbol,
+    value: getSizeForMarketCap(item.market_cap),
+    change: item.change
+  })).filter(d => d.value > 0);
 }
 
 // Update DOMContentLoaded handler to render treemap with real API data
@@ -267,6 +291,8 @@ if (typeof module !== 'undefined' && module.exports) {
     renderDropdownFilters,
     debounce,
     renderTreemap,
-    mapApiDataToTreemap // export for test
+    mapApiDataToTreemap,
+    getColorForChange,
+    getSizeForMarketCap
   };
 }

@@ -3,10 +3,10 @@
 ---
 **Stats:**
 - Total Tasks: 38
-- Completed: 36
-- % Complete: 95%
-- Completed Effort: 38.9h
-- Pending Effort: 13h
+- Completed: 37
+- % Complete: 97%
+- Completed Effort: 40.4h
+- Pending Effort: 11.5h
 
 | Task ID | Description | Status | Est. Time | Time Taken |
 |---------|-------------|--------|-----------|------------|
@@ -44,7 +44,7 @@
 | F9.1    | Set up D3.js treemap/heatmap with mock data. Example: use D3's `d3.treemap()` and render boxes in `#treemap` container. | ✅ | 2h        | 2h         |
 | F9.2    | Integrate real API data into D3.js treemap/heatmap. Example: update D3 data binding to use fetched data. | ✅ | 1.5h | 0.5h |
 <!-- Completed: Real API data is now mapped and rendered in D3 treemap. Jest-tested integration. Minimal, per spec. -->
-| F9.3    | Add color coding and sizing logic according to performance and market cap, as per palette in frontend-design.md. Example: set fill color based on `change` value. | ⬜ | 1.5h |  |
+| F9.3    | Add color coding and sizing logic according to performance and market cap, as per palette in frontend-design.md. Example: set fill color based on `change` value. | ✅ | 1.5h | 1.5h |
 | F9.4    | Add tooltips and interactivity (hover, click, modal sheet on mobile) using D3 event handlers. Example: `on('mouseover', ...)` to show tooltip div. | ⬜ | 2h |  |
 | F9.5    | Implement sector/category drilldown: clicking a sector filters the treemap. Example: update fetch call with new sector param and re-render. | ⬜ | 1.5h |  |
 | F10.1   | Write unit tests for JS data-fetching functions using Jest. Example: mock fetch and assert correct API call and data parsing. | ⬜ | 1h |  |
@@ -92,7 +92,7 @@
 - **F9.1** (2h): Set up D3.js treemap/heatmap with mock data. Example: use D3's `d3.treemap()` and render boxes in `#treemap` container. | ✅ | 2h        | 2h         |
 - **F9.2** (1.5h): Integrate real API data into D3.js treemap/heatmap. Example: update D3 data binding to use fetched data. | ✅ | 1.5h | 0.5h |
 <!-- Completed: Real API data is now mapped and rendered in D3 treemap. Jest-tested integration. Minimal, per spec. -->
-- **F9.3** (1.5h): Add color coding and sizing logic according to performance and market cap, as per palette in frontend-design.md. Example: set fill color based on `change` value.
+- **F9.3** (1.5h): Add color coding and sizing logic according to performance and market cap, as per palette in frontend-design.md. Example: set fill color based on `change` value. | ✅ | 1.5h | 1.5h |
 - **F9.4** (2h): Add tooltips and interactivity (hover, click, modal sheet on mobile) using D3 event handlers. Example: `on('mouseover', ...)` to show tooltip div.
 - **F9.5** (1.5h): Implement sector/category drilldown: clicking a sector filters the treemap. Example: update fetch call with new sector param and re-render.
 
@@ -180,3 +180,10 @@
 - **D**: Deployment
 
 ---
+
+## [2025-04-27] F9.3 Complete: D3 Treemap Color Coding & Sizing
+- Implemented getColorForChange(change) for palette-based color mapping.
+- Implemented getSizeForMarketCap(marketCap) for log-scaled sizing.
+- Updated renderTreemap and mapApiDataToTreemap to use new logic.
+- Updated and added Jest tests to cover new logic; all tests pass.
+- Time taken: 1.5h
