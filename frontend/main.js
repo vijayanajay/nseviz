@@ -178,6 +178,16 @@ function getSizeForMarketCap(marketCap) {
   return Math.log10(marketCap);
 }
 
+// Ensure d3 is available for Node (Jest) tests
+let d3;
+if (typeof window === 'undefined') {
+  try {
+    d3 = require('d3');
+  } catch (e) {
+    // fallback: handled in renderTreemap
+  }
+}
+
 /**
  * Render a D3 treemap in #treemap with the given data.
  * @param {Array<{ name: string, value: number, change: number, symbol: string }>} data - Array of objects with name, value, change, and symbol.
@@ -190,14 +200,12 @@ window.renderTreemap = function(data) {
   if (!Array.isArray(data) || data.length === 0) return;
   // Support d3 in both browser and Jest (Node)
   let d3local;
-  if (typeof d3 !== 'undefined') {
-    d3local = d3;
+  if (typeof window === 'undefined') {
+    d3local = d3; // Always use imported d3 in Node/Jest
+  } else if (typeof window !== 'undefined' && typeof window.d3 !== 'undefined') {
+    d3local = window.d3;
   } else {
-    try {
-      d3local = require('d3');
-    } catch (e) {
-      throw new Error('d3 not found');
-    }
+    throw new Error('d3 not found');
   }
   const width = container.clientWidth || 600;
   const height = 400;
@@ -218,7 +226,21 @@ window.renderTreemap = function(data) {
     .attr('width', d => d.x1 - d.x0)
     .attr('height', d => d.y1 - d.y0)
     .attr('fill', d => getColorForChange(d.data.change)) // Use color logic
-    .attr('data-symbol', d => d.data.symbol || d.data.name);
+    .attr('data-symbol', d => d.data.symbol || d.data.name)
+    .on('mouseover', function(event, d) {
+      if (window.innerWidth <= 600) return; // Only tooltip on desktop
+      removeTreemapTooltip();
+      showTreemapTooltip(d.data, event);
+    })
+    .on('mouseout', function(event, d) {
+      if (window.innerWidth <= 600) return;
+      removeTreemapTooltip();
+    })
+    .on('click', function(event, d) {
+      if (window.innerWidth > 600) return; // Only modal on mobile
+      removeTreemapModal();
+      showTreemapModal(d.data);
+    });
   nodes.append('text')
     .attr('x', 4)
     .attr('y', 20)
@@ -226,6 +248,90 @@ window.renderTreemap = function(data) {
     .attr('fill', '#0F1419')
     .attr('font-size', '16px');
 };
+
+// --- Tooltip/Modal helpers for Treemap (F9.4) ---
+function getTreemapTooltipHTML(data) {
+  return `
+    <div style='font-weight:700;font-size:1.1em;'>${data.name}</div>
+    <div style='margin:6px 0 2px 0;font-size:0.97em;'>Price Change: <b>${formatChange(data.change)}</b></div>
+    <div>Current Price: ₹${data.price ?? '--'}</div>
+    <div>Volume: ${formatVolume(data.volume)}</div>
+    <div>P/E Ratio: ${data.pe ?? '--'}</div>
+    <div>Market Cap: ₹${formatMarketCap(data.marketCap ?? data.market_cap)}</div>
+  `;
+}
+function getTreemapModalHTML(data) {
+  return `
+    <div style='font-weight:700;font-size:1.1em;'>${data.name}</div>
+    <div style='margin:6px 0 2px 0;font-size:0.97em;'>Price Change: <b>${formatChange(data.change)}</b></div>
+    <div>Current Price: ₹${data.price ?? '--'}</div>
+    <div>Volume: ${formatVolume(data.volume)}</div>
+    <div>P/E Ratio: ${data.pe ?? '--'}</div>
+    <div>Market Cap: ₹${formatMarketCap(data.marketCap ?? data.market_cap)}</div>
+    <div style='margin-top:16px;text-align:center;'><button style='padding:8px 24px;border-radius:8px;background:#2563EB;color:#fff;border:none;font-weight:600;font-size:1em;'>Close</button></div>
+  `;
+}
+function showTreemapTooltip(data, event) {
+  removeTreemapTooltip();
+  const tooltip = document.createElement('div');
+  tooltip.className = 'treemap-tooltip';
+  tooltip.style.position = 'fixed';
+  tooltip.style.left = (event.clientX + 18) + 'px';
+  tooltip.style.top = (event.clientY - 18) + 'px';
+  tooltip.style.maxWidth = '280px';
+  tooltip.style.background = '#fff';
+  tooltip.style.borderRadius = '8px';
+  tooltip.style.border = '1px solid rgba(0,0,0,0.1)';
+  tooltip.style.boxShadow = '0 4px 6px -1px rgba(0,0,0,0.1)';
+  tooltip.style.padding = '16px';
+  tooltip.style.zIndex = 9999;
+  tooltip.innerHTML = getTreemapTooltipHTML(data);
+  document.body.appendChild(tooltip);
+}
+function showTreemapModal(data) {
+  removeTreemapModal();
+  const modal = document.createElement('div');
+  modal.className = 'treemap-modal';
+  modal.style.position = 'fixed';
+  modal.style.left = 0;
+  modal.style.right = 0;
+  modal.style.bottom = 0;
+  modal.style.background = '#fff';
+  modal.style.borderRadius = '18px 18px 0 0';
+  modal.style.boxShadow = '0 -2px 16px 0 #0f14191a';
+  modal.style.padding = '24px 20px 32px 20px';
+  modal.style.zIndex = 9999;
+  modal.style.maxWidth = '98vw';
+  modal.innerHTML = getTreemapModalHTML(data);
+  modal.addEventListener('click', removeTreemapModal);
+  document.body.appendChild(modal);
+}
+function removeTreemapTooltip() {
+  const el = document.querySelector('.treemap-tooltip');
+  if (el) el.remove();
+}
+function removeTreemapModal() {
+  const el = document.querySelector('.treemap-modal');
+  if (el) el.remove();
+}
+function formatChange(change) {
+  if (typeof change !== 'number') return '--';
+  const sign = change > 0 ? '+' : '';
+  return sign + change.toFixed(2) + '%';
+}
+function formatVolume(vol) {
+  if (!vol || isNaN(vol)) return '--';
+  if (vol > 1e7) return (vol / 1e6).toFixed(1) + ' M';
+  if (vol > 1e4) return (vol / 1e3).toFixed(1) + ' K';
+  return vol.toLocaleString();
+}
+function formatMarketCap(cap) {
+  if (!cap || isNaN(cap)) return '--';
+  if (cap >= 1e12) return (cap / 1e12).toFixed(2) + ' T';
+  if (cap >= 1e9) return (cap / 1e9).toFixed(2) + ' B';
+  if (cap >= 1e6) return (cap / 1e6).toFixed(2) + ' M';
+  return cap.toLocaleString();
+}
 
 // --- Integration: API data to D3 Treemap (F9.2) ---
 /**
@@ -293,6 +399,15 @@ if (typeof module !== 'undefined' && module.exports) {
     renderTreemap,
     mapApiDataToTreemap,
     getColorForChange,
-    getSizeForMarketCap
+    getSizeForMarketCap,
+    showTreemapTooltip,
+    removeTreemapTooltip,
+    showTreemapModal,
+    removeTreemapModal,
+    formatChange,
+    formatVolume,
+    formatMarketCap,
+    getTreemapTooltipHTML,
+    getTreemapModalHTML
   };
 }

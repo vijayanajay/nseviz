@@ -2,11 +2,11 @@
 
 ---
 **Stats:**
-- Total Tasks: 38
-- Completed: 37
-- % Complete: 97%
-- Completed Effort: 40.4h
-- Pending Effort: 11.5h
+- Total Tasks: 40
+- Completed: 39
+- % Complete: 98%
+- Completed Effort: 42.4h
+- Pending Effort: 10.5h
 
 | Task ID | Description | Status | Est. Time | Time Taken |
 |---------|-------------|--------|-----------|------------|
@@ -25,6 +25,7 @@
 | B4.3    | Implement automated API contract tests using `pytest` and `requests` to ensure endpoint returns correct schema for all query param combinations. | ✅ | 2h        | 2h         |
 | B4.4    | Add logging for requests and errors using Python's `logging` module. Log every request and error with timestamp and params. | ✅ | 1h        | 1h         |
 | B4.5    | Refactor code for clarity and maintainability: add docstrings, type hints, and inline comments. Example: `def get_heatmap_data(index: str, sector: str) -> dict:` | ✅ | 1.5h      | 1h         |
+| B4.6    | Add automated contract tests for /api/heatmap-data endpoint using pytest. Ensure all edge cases (success, filtering, errors, empty data) are covered and passing. | ✅ | 1h        | 1h         |
 | B5.1    | Document endpoint, query params, and response schema in `docs/api.md` with request/response examples. | ✅ | 1h        | 1h         |
 | B5.2    | Prepare backend handover checklist: all tests passing (pytest), code linted (flake8), and documentation complete. | ✅ | 1h        | 1h         |
 | F6.1    | Create static `index.html` with containers for heatmap/treemap, controls, navbar, and footer (now in frontend/index.html) | ✅ | 1h        | 0.5h         |
@@ -45,7 +46,7 @@
 | F9.2    | Integrate real API data into D3.js treemap/heatmap. Example: update D3 data binding to use fetched data. | ✅ | 1.5h | 0.5h |
 <!-- Completed: Real API data is now mapped and rendered in D3 treemap. Jest-tested integration. Minimal, per spec. -->
 | F9.3    | Add color coding and sizing logic according to performance and market cap, as per palette in frontend-design.md. Example: set fill color based on `change` value. | ✅ | 1.5h | 1.5h |
-| F9.4    | Add tooltips and interactivity (hover, click, modal sheet on mobile) using D3 event handlers. Example: `on('mouseover', ...)` to show tooltip div. | ⬜ | 2h |  |
+| F9.4    | Add tooltips and interactivity (hover, click, modal sheet on mobile) using D3 event handlers. Example: `on('mouseover', ...)` to show tooltip div. | ✅ | 2h | 2h |
 | F9.5    | Implement sector/category drilldown: clicking a sector filters the treemap. Example: update fetch call with new sector param and re-render. | ⬜ | 1.5h |  |
 | F10.1   | Write unit tests for JS data-fetching functions using Jest. Example: mock fetch and assert correct API call and data parsing. | ⬜ | 1h |  |
 | F10.2   | Write integration tests for D3.js rendering using Jest and jsdom. Example: assert correct number of SVG nodes rendered for input data. | ⬜ | 1.5h |  |
@@ -93,7 +94,7 @@
 - **F9.2** (1.5h): Integrate real API data into D3.js treemap/heatmap. Example: update D3 data binding to use fetched data. | ✅ | 1.5h | 0.5h |
 <!-- Completed: Real API data is now mapped and rendered in D3 treemap. Jest-tested integration. Minimal, per spec. -->
 - **F9.3** (1.5h): Add color coding and sizing logic according to performance and market cap, as per palette in frontend-design.md. Example: set fill color based on `change` value. | ✅ | 1.5h | 1.5h |
-- **F9.4** (2h): Add tooltips and interactivity (hover, click, modal sheet on mobile) using D3 event handlers. Example: `on('mouseover', ...)` to show tooltip div.
+- **F9.4** (2h): Add tooltips and interactivity (hover, click, modal sheet on mobile) using D3 event handlers. Example: `on('mouseover', ...)` to show tooltip div. | ✅ | 2h | 2h |
 - **F9.5** (1.5h): Implement sector/category drilldown: clicking a sector filters the treemap. Example: update fetch call with new sector param and re-render.
 
 ### 10. Automated Testing & Code Quality

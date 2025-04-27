@@ -180,6 +180,55 @@
   }
 }
 
+/* Treemap Tooltip (desktop) */
+.treemap-tooltip {
+  position: fixed;
+  max-width: 280px;
+  background: #fff;
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,0.1);
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+  padding: 16px;
+  font-size: 1rem;
+  color: #0F1419;
+  z-index: 9999;
+  pointer-events: none;
+  transition: opacity 0.18s;
+}
+
+/* Treemap Modal Sheet (mobile) */
+.treemap-modal {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  background: #fff;
+  border-radius: 18px 18px 0 0;
+  box-shadow: 0 -2px 16px 0 #0f14191a;
+  padding: 24px 20px 32px 20px;
+  font-size: 1rem;
+  color: #0F1419;
+  z-index: 9999;
+  max-width: 98vw;
+  animation: slideUp 0.2s cubic-bezier(.39,.58,.57,1) both;
+}
+@keyframes slideUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.treemap-modal button {
+  margin-top: 16px;
+  padding: 8px 24px;
+  border-radius: 8px;
+  background: #2563EB;
+  color: #fff;
+  border: none;
+  font-weight: 600;
+  font-size: 1em;
+  cursor: pointer;
+}
+.treemap-modal button:active {
+  background: #1d4ed8;
+}
+
 /* Minimal spinner style for #loading-spinner */
 #loading-spinner {
   display: flex;
