@@ -186,8 +186,8 @@
   max-width: 280px;
   background: #fff;
   border-radius: 8px;
-  border: 1px solid rgba(0,0,0,0.1);
-  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+  border: 1px solid rgb(0 0 0 / 10%);
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 10%);
   padding: 16px;
   font-size: 1rem;
   color: #0F1419;
@@ -203,17 +203,24 @@
   background: #fff;
   border-radius: 18px 18px 0 0;
   box-shadow: 0 -2px 16px 0 #0f14191a;
-  padding: 24px 20px 32px 20px;
+  padding: 24px 20px 32px;
   font-size: 1rem;
   color: #0F1419;
   z-index: 9999;
   max-width: 98vw;
-  animation: slideUp 0.2s cubic-bezier(.39,.58,.57,1) both;
+  animation: slide-up 0.2s cubic-bezier(.39,.58,.57,1) both;
 }
-@keyframes slideUp {
-  from { transform: translateY(100%); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+
+@keyframes slide-up {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
+
 .treemap-modal button {
   margin-top: 16px;
   padding: 8px 24px;
@@ -225,6 +232,7 @@
   font-size: 1em;
   cursor: pointer;
 }
+
 .treemap-modal button:active {
   background: #1d4ed8;
 }

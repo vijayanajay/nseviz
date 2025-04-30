@@ -1,3 +1,8 @@
+// --- API base URL logic for dev/prod ---
+const API_BASE = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") && window.location.port === "3000"
+  ? "http://localhost:8080"
+  : "";
+
 // Entry point for frontend JS (empty for now, per TDD)
 
 // Minimal implementation for Index Selector segmented control (for TDD)
@@ -51,7 +56,7 @@ function fetchHeatmapData(params = {}) {
   if (params.index) q.append('index', params.index);
   if (params.sector) q.append('sector', params.sector);
   if (params.date) q.append('date', params.date);
-  const url = '/api/heatmap-data?' + q.toString();
+  const url = API_BASE + '/api/heatmap-data?' + q.toString();
   return fetch(url, { method: 'GET' })
     .then(res => {
       if (!res.ok) throw new Error(`API error: ${res.status} ${res.statusText}`);
