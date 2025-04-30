@@ -47,7 +47,7 @@
 <!-- Completed: Real API data is now mapped and rendered in D3 treemap. Jest-tested integration. Minimal, per spec. -->
 | F9.3    | Add color coding and sizing logic according to performance and market cap, as per palette in frontend-design.md. Example: set fill color based on `change` value. | ✅ | 1.5h | 1.5h |
 | F9.4    | Add tooltips and interactivity (hover, click, modal sheet on mobile) using D3 event handlers. Example: `on('mouseover', ...)` to show tooltip div. | ✅ | 2h | 2h |
-| F9.5    | Implement sector/category drilldown: clicking a sector filters the treemap. Example: update fetch call with new sector param and re-render. | ⬜ | 1.5h |  |
+| F9.5    | Implement sector/category drilldown: clicking a sector filters the treemap. Example: update fetch call with new sector param and re-render. | ✅ | 1.5h | 1.5h |
 | F10.1   | Write unit tests for JS data-fetching functions using Jest. Example: mock fetch and assert correct API call and data parsing. | ⬜ | 1h |  |
 | F10.2   | Write integration tests for D3.js rendering using Jest and jsdom. Example: assert correct number of SVG nodes rendered for input data. | ⬜ | 1.5h |  |
 | F10.3   | Write automated UI tests for index selector, date picker, and interactions using Cypress. Example: simulate user clicking index selector and verify treemap updates. | ⬜ | 2h |  |
@@ -96,18 +96,18 @@
 <!-- Completed: Real API data is now mapped and rendered in D3 treemap. Jest-tested integration. Minimal, per spec. -->
 - **F9.3** (1.5h): Add color coding and sizing logic according to performance and market cap, as per palette in frontend-design.md. Example: set fill color based on `change` value. | ✅ | 1.5h | 1.5h |
 - **F9.4** (2h): Add tooltips and interactivity (hover, click, modal sheet on mobile) using D3 event handlers. Example: `on('mouseover', ...)` to show tooltip div. | ✅ | 2h | 2h |
-- **F9.5** (1.5h): Implement sector/category drilldown: clicking a sector filters the treemap. Example: update fetch call with new sector param and re-render.
+- **F9.5** (1.5h): Implement sector/category drilldown: clicking a sector filters the treemap. Example: update fetch call with new sector param and re-render. | ✅ | 1.5h | 1.5h |
 
 ### 10. Automated Testing & Code Quality
-- **F10.1** (1h): Write unit tests for JS data-fetching functions using Jest. Example: mock fetch and assert correct API call and data parsing.
-- **F10.2** (1.5h): Write integration tests for D3.js rendering using Jest and jsdom. Example: assert correct number of SVG nodes rendered for input data.
-- **F10.3** (2h): Write automated UI tests for index selector, date picker, and interactions using Cypress. Example: simulate user clicking index selector and verify treemap updates.
+- **F10.1** (1h): Write unit tests for JS data-fetching functions using Jest. Example: mock fetch and assert correct API call and data parsing. | ⬜ | 1h |  |
+- **F10.2** (1.5h): Write integration tests for D3.js rendering using Jest and jsdom. Example: assert correct number of SVG nodes rendered for input data. | ⬜ | 1.5h |  |
+- **F10.3** (2h): Write automated UI tests for index selector, date picker, and interactions using Cypress. Example: simulate user clicking index selector and verify treemap updates. | ⬜ | 2h |  |
 - **F10.4** (1h): Write CSS linting tests using Stylelint for all CSS files. Example: add stylelint config and run `stylelint *.css`. | ✅ | 1h | 1h |
-- **F10.5** (1.5h): Add code comments and documentation to JS, HTML, and CSS files as per project standards.
+- **F10.5** (1.5h): Add code comments and documentation to JS, HTML, and CSS files as per project standards. | ⬜ | 1.5h |  |
 
 ### 11. Final Review & Handover
-- **F11.1** (1h): Ensure all frontend automated tests pass (Jest, Cypress, Stylelint). Example: run `npm test` and `npx cypress run`.
-- **F11.2** (1h): Prepare frontend handover checklist: all tests passing, code linted, documentation complete.
+- **F11.1** (1h): Ensure all frontend automated tests pass (Jest, Cypress, Stylelint). Example: run `npm test` and `npx cypress run`. | ⬜ | 1h |  |
+- **F11.2** (1h): Prepare frontend handover checklist: all tests passing, code linted, documentation complete. | ⬜ | 1h |  |
 
 ---
 ## [2025-04-25] Backend Code Refactor for Clarity & Maintainability
@@ -171,7 +171,7 @@
 ---
 ## [2025-04-25] Frontend Directory Structure Established
 - All frontend files (index.html, main.js, base.css, components.css, layouts.css, dark-mode.css) are now moved to the new frontend/ directory.
-- Root directory is now cleanly separated into backend and frontend, following Kailash Nadh’s philosophy.
+- Root directory is now cleanly separated into backend and frontend, following Kailash Nadh's philosophy.
 - All frontend structure tests pass via Jest (see __tests__/index.test.js).
 
 ---
@@ -189,6 +189,13 @@
 - Updated renderTreemap and mapApiDataToTreemap to use new logic.
 - Updated and added Jest tests to cover new logic; all tests pass.
 - Time taken: 1.5h
+
+## [2025-04-30] F9.5 Complete: Sector/Category Drilldown
+- Implemented sector drilldown functionality in treemap visualization
+- Added handleSectorClick function to filter treemap by sector when elements are clicked
+- Updated mapApiDataToTreemap to include sector information
+- Added comprehensive Jest and Cypress tests for the new feature
+- All tests passing
 
 ## [2025-04-27] File Inventory & Documentation
 - Completed a comprehensive inventory of all files and directories in the codebase.

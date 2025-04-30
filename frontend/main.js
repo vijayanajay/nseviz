@@ -195,8 +195,8 @@ if (typeof window === 'undefined') {
 
 /**
  * Render a D3 treemap in #treemap with the given data.
- * @param {Array<{ name: string, value: number, change: number, symbol: string }>} data - Array of objects with name, value, change, and symbol.
- * Example: [{ name: 'A', value: 100, change: 0.5, symbol: 'A' }, ...]
+ * @param {Array<{ name: string, value: number, change: number, symbol: string, sector: string }>} data - Array of objects with name, value, change, symbol and sector.
+ * Example: [{ name: 'A', value: 100, change: 0.5, symbol: 'A', sector: 'FINANCE' }, ...]
  */
 window.renderTreemap = function(data) {
   const container = document.getElementById('treemap');
@@ -232,6 +232,7 @@ window.renderTreemap = function(data) {
     .attr('height', d => d.y1 - d.y0)
     .attr('fill', d => getColorForChange(d.data.change)) // Use color logic
     .attr('data-symbol', d => d.data.symbol || d.data.name)
+    .attr('data-sector', d => d.data.sector || '') // Add sector data attribute
     .on('mouseover', function(event, d) {
       if (window.innerWidth <= 600) return; // Only tooltip on desktop
       removeTreemapTooltip();
@@ -242,16 +243,53 @@ window.renderTreemap = function(data) {
       removeTreemapTooltip();
     })
     .on('click', function(event, d) {
-      if (window.innerWidth > 600) return; // Only modal on mobile
-      removeTreemapModal();
-      showTreemapModal(d.data);
+      if (window.innerWidth > 600 && d.data.sector) {
+        // Desktop: trigger sector drilldown when sector exists
+        window.handleSectorClick(event, d.data);
+      } else if (window.innerWidth <= 600) {
+        // Mobile: show modal
+        removeTreemapModal();
+        showTreemapModal(d.data);
+      }
     });
   nodes.append('text')
     .attr('x', 4)
-    .attr('y', 20)
+    .attr('y', 14)
     .text(d => d.data.symbol || d.data.name)
-    .attr('fill', '#0F1419')
-    .attr('font-size', '16px');
+    .attr('font-size', '10px')
+    .attr('fill', '#fff')
+    .style('pointer-events', 'none');
+};
+
+// --- F9.5: Sector Drilldown ---
+/**
+ * Handle click on sector in treemap to filter by that sector
+ * @param {Event} event - The click event
+ * @param {Object} data - The data object for the clicked element
+ */
+window.handleSectorClick = function(event, data) {
+  if (event) event.preventDefault();
+  if (!data || !data.sector) return;
+  
+  // Get current parameters
+  const params = {};
+  const indexDropdown = document.getElementById('index-dropdown');
+  if (indexDropdown) params.index = indexDropdown.value;
+  
+  // Add sector to parameters
+  params.sector = data.sector;
+  
+  // Update sector dropdown if it exists
+  const sectorDropdown = document.getElementById('sector-dropdown');
+  if (sectorDropdown) sectorDropdown.value = data.sector;
+  
+  // Reload data with new parameters
+  return window.loadHeatmapData(params)
+    .then(apiData => {
+      const treemapData = mapApiDataToTreemap(apiData);
+      renderTreemap(treemapData);
+      return apiData;
+    });
 };
 
 // --- Tooltip/Modal helpers for Treemap (F9.4) ---
@@ -340,17 +378,18 @@ function formatMarketCap(cap) {
 
 // --- Integration: API data to D3 Treemap (F9.2) ---
 /**
- * Takes API data array and maps to D3 treemap format [{ name, value, change, symbol }]
+ * Takes API data array and maps to D3 treemap format [{ name, value, change, symbol, sector }]
  * @param {Array} apiData - Array of stock objects from API
- * @returns {Array<{ name: string, value: number, change: number, symbol: string }>}
+ * @returns {Array<{ name: string, value: number, change: number, symbol: string, sector: string }>}
  */
 function mapApiDataToTreemap(apiData) {
   if (!Array.isArray(apiData)) return [];
   return apiData.map(item => ({
     name: item.name,
     symbol: item.symbol,
-    value: getSizeForMarketCap(item.market_cap),
-    change: item.change
+    value: getSizeForMarketCap(item.market_cap || item.marketCap),
+    change: item.change,
+    sector: item.sector
   })).filter(d => d.value > 0);
 }
 
@@ -413,6 +452,7 @@ if (typeof module !== 'undefined' && module.exports) {
     formatVolume,
     formatMarketCap,
     getTreemapTooltipHTML,
-    getTreemapModalHTML
+    getTreemapModalHTML,
+    handleSectorClick
   };
 }
