@@ -19,21 +19,52 @@ def create_app() -> Flask:
     """
     app = Flask(__name__)
     CORS(app)
-    # Structured logging config
-    formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+    
+    # Set up root logger
+    root_logger = logging.getLogger()
+    root_logger.setLevel(logging.INFO)
+    
+    # Clear existing handlers to avoid duplicates
+    for handler in list(root_logger.handlers):
+        root_logger.removeHandler(handler)
+    
+    # Set up app.logger
     app.logger.setLevel(logging.INFO)
-    # Add FileHandler if NSEVIZ_LOG_FILE env var is set (for testing)
+    for handler in list(app.logger.handlers):
+        app.logger.removeHandler(handler)
+    
+    # Common formatter
+    formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+    
+    # Add FileHandler if NSEVIZ_LOG_FILE env var is set
     log_file = os.environ.get('NSEVIZ_LOG_FILE')
     if log_file:
         file_handler = logging.FileHandler(log_file, mode='a')
         file_handler.setFormatter(formatter)
-        logging.getLogger().addHandler(file_handler)
-        app.logger.addHandler(file_handler)
-    # Add StreamHandler for console logs in dev
-    if not app.logger.handlers:
-        stream_handler = logging.StreamHandler()
-        stream_handler.setFormatter(formatter)
-        app.logger.addHandler(stream_handler)
+        file_handler.setLevel(logging.INFO)
+        root_logger.addHandler(file_handler)
+        
+        # Also add to app.logger for Flask internal logs
+        app_file_handler = logging.FileHandler(log_file, mode='a')
+        app_file_handler.setFormatter(formatter)
+        app_file_handler.setLevel(logging.INFO)
+        app.logger.addHandler(app_file_handler)
+    
+    # Add console handler
+    console_handler = logging.StreamHandler()
+    console_handler.setFormatter(formatter)
+    console_handler.setLevel(logging.INFO)
+    root_logger.addHandler(console_handler)
+    
+    # Ensure app.logger also has console handler
+    app_console_handler = logging.StreamHandler()
+    app_console_handler.setFormatter(formatter)
+    app_console_handler.setLevel(logging.INFO)
+    app.logger.addHandler(app_console_handler)
+    
+    # Disable Flask's default handlers
+    app.logger.propagate = False
+    
     # Import and register blueprints
     from .routes import api_bp
     app.register_blueprint(api_bp)

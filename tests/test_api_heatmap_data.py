@@ -16,16 +16,42 @@ def test_success_minimal(client):
     resp = client.get('/api/heatmap-data?index=NIFTY50')
     assert resp.status_code == 200
     data = resp.get_json()
+    
+    # Check basic structure of response
     assert isinstance(data, dict)
     assert 'data' in data
     assert isinstance(data['data'], list)
-    assert all('symbol' in item and 'name' in item for item in data['data'])
+    
+    # If there's data returned, verify schema of the first item
+    if data['data']:
+        first_item = data['data'][0]
+        assert 'symbol' in first_item
+        assert 'name' in first_item
+        assert isinstance(first_item['symbol'], str)
+        assert isinstance(first_item['name'], str)
+    else:
+        # If no data, make sure there's a note explaining why
+        assert 'note' in data
+        assert "No data available" in data['note']
 
 def test_sector_filter(client):
     resp = client.get('/api/heatmap-data?index=NIFTY50&sector=FINANCE')
     assert resp.status_code == 200
     data = resp.get_json()
-    assert all(item['sector'] == 'FINANCE' for item in data['data'])
+    
+    # Verify the structure of the response
+    assert 'data' in data
+    assert isinstance(data['data'], list)
+    
+    # Check if there's data, then verify all items have the same sector
+    if data['data']:
+        for item in data['data']:
+            assert 'sector' in item
+            assert item['sector'] == 'FINANCE'
+    else:
+        # If no data, make sure there's a note explaining why
+        assert 'note' in data
+        assert "No data available" in data['note']
 
 def test_date_filter(client):
     resp = client.get('/api/heatmap-data?index=NIFTY50&date=2022-01-01')

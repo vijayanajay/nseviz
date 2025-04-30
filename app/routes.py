@@ -5,6 +5,7 @@ from datetime import datetime
 import logging
 import os
 from typing import Dict, Any, List, Optional
+import numpy as np
 
 """
 Module-level docstring:
@@ -137,34 +138,73 @@ def heatmap_data() -> Any:
         if index not in valid_indices:
             logger.error(f"Invalid index: {index}")
             return jsonify(error={"code": "INVALID_PARAM", "message": f"Invalid index: {index}"}), 400
+        
         # Fetch data (mocked or real)
         tickers: List[str] = valid_indices[index]
         yf_kwargs: Dict[str, Any] = {}
         yf_kwargs['start'] = date
         yf_kwargs['end'] = date
-        df = yf.download(tickers, group_by='ticker', **yf_kwargs)
+        
+        try:
+            df = yf.download(tickers, group_by='ticker', **yf_kwargs)
+        except Exception as yf_error:
+            logger.error(f"yfinance download error: {yf_error}")
+            return jsonify(error={"code": "YFINANCE_ERROR", "message": str(yf_error)}), 500
+            
+        # Check if dataframe is empty
+        if df.empty:
+            return jsonify({
+                "index": index,
+                "sector": sector,
+                "date": date,
+                "data": [],
+                "note": "No data available for the given parameters."
+            }), 200
+            
         sector_map: Dict[str, str] = get_sector_mapping()
         name_map: Dict[str, str] = get_name_mapping()
         result: List[Dict[str, Any]] = []
+        
         for symbol in tickers:
             if sector and sector_map.get(symbol) != sector:
                 continue
-            # Handle both single and multi-index DataFrame
-            stock_df = df[symbol] if symbol in df else df
-            if stock_df.empty:
+            try:
+                # Handle both single and multi-index DataFrame
+                if hasattr(df, 'columns') and hasattr(df.columns, 'levels') and symbol in df.columns.levels[0]:
+                    stock_df = df[symbol]
+                elif symbol in df.columns:
+                    stock_df = df[[col for col in df.columns if col == symbol or (isinstance(col, tuple) and col[0] == symbol)]]
+                elif symbol in df:
+                    stock_df = df[symbol]
+                else:
+                    stock_df = df
+                if stock_df.empty:
+                    continue
+                latest = stock_df.iloc[-1]
+                if 'Close' not in latest or np.isnan(latest['Close']):
+                    continue
+                price = float(latest['Close'])
+                if 'Open' in latest and not np.isnan(latest['Open']) and latest['Open'] > 0:
+                    change = float(latest['Close'] - latest['Open']) / float(latest['Open']) * 100
+                else:
+                    change = 0.0
+                if 'Volume' in latest and not np.isnan(latest['Volume']):
+                    volume = int(latest['Volume'])
+                else:
+                    volume = 0
+                name = name_map.get(symbol, symbol)
+                result.append({
+                    "symbol": symbol,
+                    "name": name,
+                    "price": price,
+                    "change": round(change, 2),
+                    "volume": volume,
+                    "sector": sector_map.get(symbol, "UNKNOWN")
+                })
+            except Exception as symbol_error:
+                logger.error(f"Error processing symbol {symbol}: {symbol_error}")
                 continue
-            latest = stock_df.iloc[-1]
-            price = float(latest['Close'])
-            change = float(latest['Close'] - latest['Open']) / float(latest['Open']) * 100 if latest['Open'] else 0
-            volume = int(latest['Volume']) if 'Volume' in latest else 0
-            name = name_map.get(symbol, symbol)
-            result.append({
-                "symbol": symbol,
-                "name": name,
-                "price": price,
-                "change": round(change, 2),
-                "volume": volume
-            })
+                
         # Always include date in response
         response: Dict[str, Any] = {
             "index": index,
@@ -172,12 +212,15 @@ def heatmap_data() -> Any:
             "date": date,
             "data": result
         }
+        
         # Add note/message for clarity
         if not result:
             response["note"] = "No data available for the given parameters."
         else:
             response["note"] = f"Records returned: {len(result)}"
+            
         return jsonify(response), 200
+        
     except Exception as e:
         logger.error(f"yfinance error: {e}")
         return jsonify(error={"code": "YFINANCE_ERROR", "message": str(e)}), 500
