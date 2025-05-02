@@ -48,7 +48,7 @@
 | F9.3    | Add color coding and sizing logic according to performance and market cap, as per palette in frontend-design.md. Example: set fill color based on `change` value. | ✅ | 1.5h | 1.5h |
 | F9.4    | Add tooltips and interactivity (hover, click, modal sheet on mobile) using D3 event handlers. Example: `on('mouseover', ...)` to show tooltip div. | ✅ | 2h | 2h |
 | F9.5    | Implement sector/category drilldown: clicking a sector filters the treemap. Example: update fetch call with new sector param and re-render. | ✅ | 1.5h | 1.5h |
-| F10.1   | Write unit tests for JS data-fetching functions using Jest. Example: mock fetch and assert correct API call and data parsing. | ⬜ | 1h |  |
+| F10.1   | Write unit tests for JS data-fetching functions using Jest. Example: mock fetch and assert correct API call and data parsing. | ✅ | 1h | 1h |
 | F10.2   | Write integration tests for D3.js rendering using Jest and jsdom. Example: assert correct number of SVG nodes rendered for input data. | ⬜ | 1.5h |  |
 | F10.3   | Write automated UI tests for index selector, date picker, and interactions using Cypress. Example: simulate user clicking index selector and verify treemap updates. | ⬜ | 2h |  |
 | F10.4   | Write CSS linting tests using Stylelint for all CSS files. Example: add stylelint config and run `stylelint *.css`. | ✅ | 1h | 1h |
@@ -99,7 +99,7 @@
 - **F9.5** (1.5h): Implement sector/category drilldown: clicking a sector filters the treemap. Example: update fetch call with new sector param and re-render. | ✅ | 1.5h | 1.5h |
 
 ### 10. Automated Testing & Code Quality
-- **F10.1** (1h): Write unit tests for JS data-fetching functions using Jest. Example: mock fetch and assert correct API call and data parsing. | ⬜ | 1h |  |
+- **F10.1** (1h): Write unit tests for JS data-fetching functions using Jest. Example: mock fetch and assert correct API call and data parsing. | ✅ | 1h | 1h |
 - **F10.2** (1.5h): Write integration tests for D3.js rendering using Jest and jsdom. Example: assert correct number of SVG nodes rendered for input data. | ⬜ | 1.5h |  |
 - **F10.3** (2h): Write automated UI tests for index selector, date picker, and interactions using Cypress. Example: simulate user clicking index selector and verify treemap updates. | ⬜ | 2h |  |
 - **F10.4** (1h): Write CSS linting tests using Stylelint for all CSS files. Example: add stylelint config and run `stylelint *.css`. | ✅ | 1h | 1h |
@@ -201,3 +201,19 @@
 - Completed a comprehensive inventory of all files and directories in the codebase.
 - Created docs/files_info.md describing the purpose of every file and directory, and flagged any that are unclear or potentially unnecessary.
 - This improves maintainability and clarity for all contributors.
+
+---
+## [2025-04-30] Static Asset Reference Fix
+- Updated frontend/dist/index.html to reference .min.css and .min.js files.
+- Ensured build process and HTML are in sync for static file serving.
+- All static assets now load correctly in the browser.
+
+---
+## [2025-05-01] F10.1 Complete: Data Fetching Unit Tests
+- Added comprehensive Jest unit tests for fetchHeatmapData function
+- Tests verify correct URL construction with query parameters
+- Tests verify error handling and JSON parsing
+- Added tests for UI state management during data fetching
+- All tests passing, using minimal and clean test code
+
+---
